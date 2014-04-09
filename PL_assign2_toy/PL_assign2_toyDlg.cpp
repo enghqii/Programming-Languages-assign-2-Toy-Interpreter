@@ -49,6 +49,9 @@ END_MESSAGE_MAP()
 
 CPL_assign2_toyDlg::CPL_assign2_toyDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CPL_assign2_toyDlg::IDD, pParent)
+	, m_strInfix(_T(""))
+	, m_strResult(_T(""))
+	, m_strPost(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -56,12 +59,17 @@ CPL_assign2_toyDlg::CPL_assign2_toyDlg(CWnd* pParent /*=NULL*/)
 void CPL_assign2_toyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, m_strInfix);
+	DDX_Text(pDX, IDC_EDIT4, m_strResult);
+	DDX_Text(pDX, IDC_EDIT3, m_strPost);
 }
 
 BEGIN_MESSAGE_MAP(CPL_assign2_toyDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CPL_assign2_toyDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CPL_assign2_toyDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -150,3 +158,21 @@ HCURSOR CPL_assign2_toyDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+/* on EXIT */
+void CPL_assign2_toyDlg::OnBnClickedButton1()
+{
+	CDialog::OnCancel();
+}
+
+/* on CLEAR*/
+void CPL_assign2_toyDlg::OnBnClickedButton2()
+{
+	UpdateData(false);
+	
+	m_strInfix = L"";
+	m_strPost = L"";
+	m_strResult = L"";
+
+	UpdateData(true);
+}
