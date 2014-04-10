@@ -23,11 +23,8 @@ namespace toy
 		OutputDebugList();
 
 		// Syntax Analysis
+		this->SyntaxAnalysis();
 
-		/*
-		SYNTAX_ERR err = ERR_NOTHING;
-		// throw err;
-		}*/
 	}
 
 	/* generate Lexme List */
@@ -44,6 +41,15 @@ namespace toy
 				// braces
 				CLexeme lexeme;
 				lexeme.name += infix[i];
+				
+				if( '(' == infix[i] )
+				{
+					lexeme.type = LEX_BRACE_OPEN;
+				}
+				else if( ')' == infix[i] )
+				{
+					lexeme.type = LEX_BRACE_CLOSE;
+				}
 
 				m_listLexemes.push_back(lexeme);
 			}
@@ -57,6 +63,18 @@ namespace toy
 					lexeme.name += infix[j];
 				}
 				i += lexeme.name.length() - 1;
+
+				// is really a identifier ? or an operator?
+				if( (lexeme.name.compare(L"MINUS") == 0) ||
+					(lexeme.name.compare(L"IF") == 0) ) 
+				{
+					lexeme.type = LEX_OPERATOR;
+				}
+				else
+				{
+					lexeme.type = LEX_IDENTIFIER;
+				}
+
 				m_listLexemes.push_back(lexeme);
 			}
 			else if( isdigit(infix[i]) || '-' == infix[i] )
@@ -73,6 +91,8 @@ namespace toy
 				while( (j < len) && (isdigit(infix[j]) || infix[j] == '.') );
 
 				i += lexeme.name.length() - 1;
+
+				lexeme.type = LEX_CONSTANT;
 				m_listLexemes.push_back(lexeme);
 			}
 			else if(isspace(infix[i])){
@@ -89,6 +109,17 @@ namespace toy
 			std::wstring str = it.name;
 			str += L"\n";
 			OutputDebugString(str.c_str());
+		}
+	}
+	
+	void CParser::SyntaxAnalysis()
+	{
+		SYNTAX_ERR err = ERR_NOTHING;
+		// throw err;
+
+		for( auto it : m_listLexemes ) 
+		{
+			it.name;
 		}
 	}
 }

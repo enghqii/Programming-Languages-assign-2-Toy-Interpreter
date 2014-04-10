@@ -22,8 +22,10 @@ namespace toy
 	{
 		LEX_NULL = 0,
 		LEX_IDENTIFIER,
+		LEX_CONSTANT,
 		LEX_OPERATOR,
-		LEX_CONSTANT
+		LEX_BRACE_OPEN,
+		LEX_BRACE_CLOSE,
 	};
 
 	struct CLexeme
@@ -53,6 +55,8 @@ namespace toy
 
 		// Generate lexeme list
 		void LexicalAnalysis(std::wstring infix);
+		// Generate Parsing tree
+		void SyntaxAnalysis();
 
 		void OutputDebugList();
 
