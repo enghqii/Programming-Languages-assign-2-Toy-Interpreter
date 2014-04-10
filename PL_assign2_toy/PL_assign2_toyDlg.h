@@ -4,6 +4,10 @@
 
 #pragma once
 
+namespace toy
+{
+	class CAdapter;
+}
 
 // CPL_assign2_toyDlg 대화 상자
 class CPL_assign2_toyDlg : public CDialogEx
@@ -22,6 +26,7 @@ public:
 // 구현입니다.
 protected:
 	HICON m_hIcon;
+	toy::CAdapter * m_pToyAdapter;
 
 	// 생성된 메시지 맵 함수
 	virtual BOOL OnInitDialog();
@@ -35,4 +40,7 @@ public:
 	CString m_strResult;
 	CString m_strPost;
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
 };

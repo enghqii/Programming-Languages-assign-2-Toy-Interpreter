@@ -7,6 +7,9 @@
 #include "PL_assign2_toyDlg.h"
 #include "afxdialogex.h"
 
+#include "Adapter.h"
+#include "Util.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -70,6 +73,9 @@ BEGIN_MESSAGE_MAP(CPL_assign2_toyDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CPL_assign2_toyDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CPL_assign2_toyDlg::OnBnClickedButton2)
+	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_BUTTON3, &CPL_assign2_toyDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CPL_assign2_toyDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -105,6 +111,9 @@ BOOL CPL_assign2_toyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	{
+		this->m_pToyAdapter = new toy::CAdapter();
+	}
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -158,6 +167,16 @@ HCURSOR CPL_assign2_toyDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+/* on DESTORY */
+void CPL_assign2_toyDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// dtor here
+	{
+		delete m_pToyAdapter;
+	}
+}
 
 /* on EXIT */
 void CPL_assign2_toyDlg::OnBnClickedButton1()
@@ -168,11 +187,37 @@ void CPL_assign2_toyDlg::OnBnClickedButton1()
 /* on CLEAR*/
 void CPL_assign2_toyDlg::OnBnClickedButton2()
 {
-	UpdateData(false);
+	UpdateData(true);
 	
-	m_strInfix = L"";
-	m_strPost = L"";
+	m_strInfix	= L"";
+	m_strPost	= L"";
 	m_strResult = L"";
 
+	UpdateData(false);
+}
+
+/* on LOAD SOURCE*/
+void CPL_assign2_toyDlg::OnBnClickedButton3()
+{
+	// Obtain current dir path
+	TCHAR szDirectory[512] = L"";
+	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+
+	// File selecting dir
+	CFileDialog dlg(true, NULL,NULL, OFN_HIDEREADONLY);
+	dlg.m_ofn.lpstrInitialDir = szDirectory;
+
+	if(IDOK == dlg.DoModal()){
+
+	}
+}
+
+/* on Parse */
+void CPL_assign2_toyDlg::OnBnClickedButton4()
+{
 	UpdateData(true);
+	//std::string infix = toy::CUtil::ConvertString(m_strInfix);
+	std::wstring infix(m_strInfix);
+	m_pToyAdapter->Parse(infix);
+	UpdateData(false);
 }
