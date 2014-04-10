@@ -15,7 +15,7 @@ namespace toy
 	{
 	}
 
-	void CParser::Parse(std::string infix)
+	void CParser::Parse(std::wstring infix)
 	{
 		// Lexical Analysis
 		this->LexicalAnalysis(infix);
@@ -31,7 +31,7 @@ namespace toy
 	}
 
 	/* generate Lexme List */
-	void CParser::LexicalAnalysis(std::string infix)
+	void CParser::LexicalAnalysis(std::wstring infix)
 	{
 		m_listLexemes.clear();
 
@@ -86,9 +86,9 @@ namespace toy
 	void CParser::OutputDebugList()
 	{
 		for(auto it : m_listLexemes){
-			std::string str = it.name;
-			str += "\n";
-			OutputDebugStringA(str.c_str());
+			std::wstring str = it.name;
+			str += L"\n";
+			OutputDebugString(str.c_str());
 		}
 	}
 }

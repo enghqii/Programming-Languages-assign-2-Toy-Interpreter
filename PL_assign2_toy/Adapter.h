@@ -29,11 +29,11 @@ namespace toy
 		std::wstring m_strCode;			// infix TOY code
 
 		// pass 1
-		std::string m_strPostFix;		// postfix TOY code
-		std::string m_strIntermediate;	// intermediate code
+		std::wstring m_strPostFix;		// postfix TOY code
+		std::wstring m_strIntermediate;	// intermediate code
 
 		// pass 2
-		std::string m_strResult;
+		std::wstring m_strResult;
 	};
 
 }

@@ -29,10 +29,10 @@ namespace toy
 	struct CLexeme
 	{
 	public:
-		CLexeme():name(""),type(LEX_NULL){}
+		CLexeme():name(L""),type(LEX_NULL){}
 		~CLexeme(){}
 
-		std::string name;
+		std::wstring name;
 		LEXEME_TYPE type;
 	};
 
@@ -47,12 +47,12 @@ namespace toy
 		~CParser(void);
 
 		// Parse LIKE A STATE MACHINE
-		void Parse(std::string infix); 
+		void Parse(std::wstring infix); 
 
 	private:
 
 		// Generate lexeme list
-		void LexicalAnalysis(std::string infix);
+		void LexicalAnalysis(std::wstring infix);
 
 		void OutputDebugList();
 
