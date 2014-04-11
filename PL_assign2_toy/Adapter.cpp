@@ -2,6 +2,7 @@
 #include "Adapter.h"
 
 #include "Parser.h"
+#include "Interpreter.h"
 
 namespace toy
 {
@@ -12,13 +13,15 @@ namespace toy
 		m_strResult(L""),
 		m_pParser(NULL)
 	{
-		m_pParser = new CParser();
+		m_pParser		= new CParser();
+		m_pInterpreter	= new CInterpreter();
 	}
 
 
 	CAdapter::~CAdapter(void)
 	{
 		delete m_pParser;
+		delete m_pInterpreter;
 	}
 	
 	void CAdapter::Parse(std::wstring infix)
@@ -40,7 +43,7 @@ namespace toy
 		}
 	}
 
-	CString CAdapter::GetIntermediateCode()
+	CString CAdapter::GenerateIntermediateString()
 	{
 		CString interms = L"";
 		std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
@@ -52,5 +55,19 @@ namespace toy
 		}
 
 		return interms;
+	}
+
+	void CAdapter::Execute()
+	{
+		std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
+		m_pInterpreter->SetIntermediateCode(intermList);
+		int res = m_pInterpreter->Execute();
+
+		m_strResult = std::to_wstring(res);
+	}
+
+	CString CAdapter::GetResultString()
+	{
+		return CString(m_strResult.c_str());
 	}
 }

@@ -76,6 +76,10 @@ BEGIN_MESSAGE_MAP(CPL_assign2_toyDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON3, &CPL_assign2_toyDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CPL_assign2_toyDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CPL_assign2_toyDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CPL_assign2_toyDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CPL_assign2_toyDlg::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON8, &CPL_assign2_toyDlg::OnBnClickedButton8)
 END_MESSAGE_MAP()
 
 
@@ -220,7 +224,37 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 	std::wstring infix(m_strInfix);
 	m_pToyAdapter->Parse(infix);
 
-	m_strPost = m_pToyAdapter->GetIntermediateCode();
+	m_strPost = m_pToyAdapter->GenerateIntermediateString();
+
+	UpdateData(false);
+}
+
+/* on generate intermediate code */
+void CPL_assign2_toyDlg::OnBnClickedButton5()
+{
+
+}
+
+/* on save intermediate code */
+void CPL_assign2_toyDlg::OnBnClickedButton6()
+{
+
+}
+
+
+/* on load intermediate code */
+void CPL_assign2_toyDlg::OnBnClickedButton7()
+{
+
+}
+
+/* on execution */
+void CPL_assign2_toyDlg::OnBnClickedButton8()
+{
+	UpdateData(true);
+
+	m_pToyAdapter->Execute();
+	this->m_strResult = m_pToyAdapter->GetResultString();
 
 	UpdateData(false);
 }

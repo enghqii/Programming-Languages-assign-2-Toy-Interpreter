@@ -6,6 +6,7 @@ namespace toy
 {
 
 	class CParser;
+	class CInterpreter;
 
 	/***********************************
 	* TOY언어의 해석, Dialog 적응 담당 *
@@ -21,11 +22,20 @@ namespace toy
 	public:
 
 		void		Parse(std::wstring infix);
-		CString		GetIntermediateCode();
+		CString		GenerateIntermediateString();
+
+		void		Execute();
+
+		CString		GetResultString();
 
 	private:
 
-		CParser * m_pParser;
+		CParser *		m_pParser;
+		CInterpreter *	m_pInterpreter;
+
+	private:
+
+		// TODO : use those vars
 
 		// Raw
 		std::wstring m_strCode;			// infix TOY code
