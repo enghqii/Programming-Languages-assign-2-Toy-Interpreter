@@ -48,8 +48,8 @@ namespace toy
 		CParser(void);
 		~CParser(void);
 
-		// Parse LIKE A STATE MACHINE
-		void Parse(std::wstring infix); 
+		void						Parse(std::wstring infix); 
+		std::list<std::wstring>		GetIntermediateList();
 
 	private:
 
@@ -57,13 +57,17 @@ namespace toy
 		void LexicalAnalysis(std::wstring infix);
 		// Generate Parsing tree
 		void SyntaxAnalysis();
+		// Generate Intermediate codes
+		void GenerateIntermediateCode();
 
+		// Debug
 		void OutputDebugList();
 
 	private:
-
-		CTree *				m_pExpTree;
-		std::list<CLexeme>	m_listLexemes;
+		
+		std::list<CLexeme>		m_listLexemes;
+		CTree *					m_pExpTree;
+		std::list<std::wstring> m_listIntermCodes;
 	};
 
 }

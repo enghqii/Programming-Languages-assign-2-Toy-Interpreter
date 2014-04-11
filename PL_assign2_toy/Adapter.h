@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include <string>
 
 namespace toy
@@ -19,7 +20,8 @@ namespace toy
 
 	public:
 
-		void Parse(std::wstring infix);
+		void		Parse(std::wstring infix);
+		CString		GetIntermediateCode();
 
 	private:
 

@@ -10,6 +10,7 @@ namespace toy
 	CParser::CParser(void)
 	{
 		m_listLexemes.clear();
+		m_listIntermCodes.clear();
 		m_pExpTree = new CTree();
 	}
 
@@ -22,16 +23,25 @@ namespace toy
 	void CParser::Parse(std::wstring infix)
 	{
 		// Lexical Analysis
+		// TODO : 쓸모없는 문자가 있거나 여튼 이상한 문자열이 들어오면 throw.
 		this->LexicalAnalysis(infix);
 
-		//OutputDebugList();
+		OutputDebugList();
 
 		// Syntax Analysis
+		// TODO : 문법 오류 핸들링 해야함. 다음 라인으로 진행되는건 정상동작을 보증한다는 뜻.
 		this->SyntaxAnalysis();
 		
-		m_pExpTree->OutputInorderTraverse();
-		m_pExpTree->OutputPostorderTraverse();
+		/*m_pExpTree->OutputInorderTraverse();
+		m_pExpTree->OutputPostorderTraverse();*/
 
+		this->GenerateIntermediateCode();
+
+	}
+
+	std::list<std::wstring> CParser::GetIntermediateList()
+	{
+		return this->m_listIntermCodes;
 	}
 
 	/* generate Lexme List */
@@ -122,6 +132,8 @@ namespace toy
 	
 	void CParser::SyntaxAnalysis()
 	{
+		// TODO : 괄호 갯수 맞는지 판별
+
 		SYNTAX_ERR err = ERR_NOTHING;
 		// throw err;
 		std::stack<tree::CNode *> stk;
@@ -181,8 +193,20 @@ namespace toy
 			}
 		}
 
-		// built?
+		// TODO : 스택에 값이 하나만 있음? 을 확인해야함
+
 		tree::CNode * exp = stk.top();
 		m_pExpTree->SetExpNode(exp);
+	}
+
+	void CParser::GenerateIntermediateCode()
+	{
+		m_listIntermCodes.clear();
+
+		std::list<std::wstring> postTrav = m_pExpTree->GeneratePostorderInterms();
+		m_listIntermCodes = postTrav;
+		
+		m_listIntermCodes.push_front(std::wstring(L"begin"));
+		m_listIntermCodes.push_back(std::wstring(L"end"));
 	}
 }

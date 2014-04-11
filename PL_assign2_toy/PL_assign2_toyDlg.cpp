@@ -216,8 +216,11 @@ void CPL_assign2_toyDlg::OnBnClickedButton3()
 void CPL_assign2_toyDlg::OnBnClickedButton4()
 {
 	UpdateData(true);
-	//std::string infix = toy::CUtil::ConvertString(m_strInfix);
+	
 	std::wstring infix(m_strInfix);
 	m_pToyAdapter->Parse(infix);
+
+	m_strPost = m_pToyAdapter->GetIntermediateCode();
+
 	UpdateData(false);
 }

@@ -62,6 +62,36 @@ namespace toy
 	{
 		root->SetLeft(exp);
 	}
+	
+	std::list<std::wstring> CTree::GeneratePostorderInterms()
+	{
+		std::list<std::wstring> interms;
+		this->PostInterm(root->GetLeft(), interms);
+
+		return interms;
+	}
+
+	void CTree::PostInterm(tree::CNode *n, std::list<std::wstring>& interms)
+	{
+		if(n == NULL)
+		{ 
+			return;
+		}
+		
+		PostInterm(n->GetLeft(), interms);
+		PostInterm(n->GetRight(), interms);
+		
+		if(n->GetType() == tree::NODE_OPERATOR)
+		{
+			interms.push_back(n->GetName());
+		}
+		else if(n->GetType() == tree::NODE_OPERAND)
+		{
+			std::wstring str = n->GetName();
+			str = L"push " + str;
+			interms.push_back(str);
+		}
+	}
 
 	void CTree::OutputInorderTraverse()
 	{
@@ -96,4 +126,5 @@ namespace toy
 		OutputDebugString(n->GetName().c_str());
 		OutputDebugString(L" ");
 	}
+
 }

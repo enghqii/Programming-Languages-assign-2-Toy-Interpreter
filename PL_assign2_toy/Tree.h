@@ -1,6 +1,7 @@
 #pragma once
 
 #include<string>
+#include<list>
 
 namespace toy
 {
@@ -20,23 +21,24 @@ namespace toy
 			CNode(CNode* parent, NodeType type, std::wstring name);
 			~CNode();
 
-			CNode * GetLeft();
-			CNode * GetRight();
+			CNode *			GetLeft();
+			CNode *			GetRight();
 			
-			void SetLeft(CNode * left);
-			void SetRight(CNode * right);
+			void			SetLeft(CNode * left);
+			void			SetRight(CNode * right);
 
-			std::wstring GetName();
-
-		private:
-			NodeType	m_eType;
-			std::wstring m_strName;
+			std::wstring	GetName();
+			NodeType		GetType(){ return this->m_eType; }
 
 		private:
-			CNode * m_pParent;
+			NodeType		m_eType;
+			std::wstring	m_strName;
 
-			CNode * m_pLeft;
-			CNode * m_pRight;
+		private:
+			CNode *			m_pParent;
+
+			CNode *			m_pLeft;
+			CNode *			m_pRight;
 		};
 	}
 
@@ -48,11 +50,16 @@ namespace toy
 
 		void SetExpNode(tree::CNode * exp);
 
+		std::list<std::wstring> GeneratePostorderInterms();
+
 		// DEBUG
 		void OutputInorderTraverse();
 		void OutputPostorderTraverse();
 
 	private:
+
+		// rekursiv
+		void PostInterm(tree::CNode *n, std::list<std::wstring>& interms);
 
 		// DEBUG
 		void Inorder(tree::CNode *n);

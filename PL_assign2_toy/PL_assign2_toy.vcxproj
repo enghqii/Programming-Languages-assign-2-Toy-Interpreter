@@ -101,6 +101,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PL_assign2_toy.h" />
     <ClInclude Include="PL_assign2_toyDlg.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PL_assign2_toy.cpp" />
     <ClCompile Include="PL_assign2_toyDlg.cpp" />

@@ -39,4 +39,18 @@ namespace toy
 			}
 		}
 	}
+
+	CString CAdapter::GetIntermediateCode()
+	{
+		CString interms = L"";
+		std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
+
+		for( auto iter : intermList )
+		{
+			CString str(iter.c_str());
+			interms.Append(str + L"\r\n");
+		}
+
+		return interms;
+	}
 }
