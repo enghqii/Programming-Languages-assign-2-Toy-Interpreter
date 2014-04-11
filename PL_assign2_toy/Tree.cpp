@@ -18,6 +18,16 @@ namespace toy
 		{
 		}
 
+		CNode* CNode::GetLeft()
+		{
+			return m_pLeft;
+		}
+
+		CNode* CNode::GetRight()
+		{
+			return m_pRight;
+		}
+
 		void CNode::SetLeft(CNode* left)
 		{
 			left->m_pParent = this;
@@ -28,6 +38,11 @@ namespace toy
 		{
 			right->m_pParent = this;
 			this->m_pRight = right;
+		}
+
+		std::wstring CNode::GetName()
+		{
+			return this->m_strName;
 		}
 	}
 
@@ -40,6 +55,45 @@ namespace toy
 
 	CTree::~CTree(void)
 	{
+		// TODO : Àç±ÍÀû ³ëµå ÆÄ±« ¿ä¸Á
 	}
 	
+	void CTree::SetExpNode(tree::CNode * exp)
+	{
+		root->SetLeft(exp);
+	}
+
+	void CTree::OutputInorderTraverse()
+	{
+		this->Inorder(root->GetLeft());	
+		OutputDebugString(L"\n");
+	}
+	void CTree::Inorder(tree::CNode *n)
+	{
+		if(n == NULL)
+		{ 
+			return;
+		}
+		Inorder(n->GetLeft());
+		OutputDebugString(n->GetName().c_str());
+		OutputDebugString(L" ");
+		Inorder(n->GetRight());
+	}
+
+	void CTree::OutputPostorderTraverse()
+	{
+		this->Postorder(root->GetLeft());
+		OutputDebugString(L"\n");
+	}
+	void CTree::Postorder(tree::CNode *n)
+	{
+		if(n == NULL)
+		{ 
+			return;
+		}
+		Postorder(n->GetLeft());
+		Postorder(n->GetRight());
+		OutputDebugString(n->GetName().c_str());
+		OutputDebugString(L" ");
+	}
 }

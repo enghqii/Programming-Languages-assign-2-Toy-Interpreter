@@ -10,11 +10,13 @@ namespace toy
 	CParser::CParser(void)
 	{
 		m_listLexemes.clear();
+		m_pExpTree = new CTree();
 	}
 
 
 	CParser::~CParser(void)
 	{
+		delete m_pExpTree;
 	}
 
 	void CParser::Parse(std::wstring infix)
@@ -22,10 +24,13 @@ namespace toy
 		// Lexical Analysis
 		this->LexicalAnalysis(infix);
 
-		OutputDebugList();
+		//OutputDebugList();
 
 		// Syntax Analysis
 		this->SyntaxAnalysis();
+		
+		m_pExpTree->OutputInorderTraverse();
+		m_pExpTree->OutputPostorderTraverse();
 
 	}
 
@@ -177,6 +182,7 @@ namespace toy
 		}
 
 		// built?
-		OutputDebugString(L"built?");
+		tree::CNode * exp = stk.top();
+		m_pExpTree->SetExpNode(exp);
 	}
 }

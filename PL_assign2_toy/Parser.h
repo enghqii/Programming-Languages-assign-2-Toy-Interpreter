@@ -62,7 +62,7 @@ namespace toy
 
 	private:
 
-		CTree *				m_pParseTree;
+		CTree *				m_pExpTree;
 		std::list<CLexeme>	m_listLexemes;
 	};
 
