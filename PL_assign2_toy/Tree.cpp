@@ -5,7 +5,7 @@ namespace toy
 {
 	namespace tree
 	{
-		CNode::CNode(CNode* parent, NodeType type, std::string name)
+		CNode::CNode(CNode* parent, NodeType type, std::wstring name)
 			:m_eType(type),
 			m_strName(name),
 			m_pParent(parent),
@@ -17,11 +17,23 @@ namespace toy
 		CNode::~CNode()
 		{
 		}
+
+		void CNode::SetLeft(CNode* left)
+		{
+			left->m_pParent = this;
+			this->m_pLeft = left;
+		}
+		
+		void CNode::SetRight(CNode* right)
+		{
+			right->m_pParent = this;
+			this->m_pRight = right;
+		}
 	}
 
 	CTree::CTree(void)
 	{
-		root = new tree::CNode(NULL, tree::NODE_ROOT, "root");
+		root = new tree::CNode(NULL, tree::NODE_ROOT, L"root");
 		curNode = root;
 	}
 
@@ -29,5 +41,5 @@ namespace toy
 	CTree::~CTree(void)
 	{
 	}
-
+	
 }

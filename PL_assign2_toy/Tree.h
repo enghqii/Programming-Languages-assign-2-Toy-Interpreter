@@ -17,15 +17,17 @@ namespace toy
 		{
 
 		public:
-			CNode(CNode* parent, NodeType type, std::string name);
+			CNode(CNode* parent, NodeType type, std::wstring name);
 			~CNode();
+			
+			void SetLeft(CNode * left);
+			void SetRight(CNode * right);
 
 		private:
 			NodeType	m_eType;
-			std::string m_strName;
+			std::wstring m_strName;
 
 		private:
-
 			CNode * m_pParent;
 
 			CNode * m_pLeft;
@@ -38,8 +40,6 @@ namespace toy
 	public:
 		CTree(void);
 		~CTree(void);
-
-		void addIdentifier(std::string identifier);
 
 	private:
 		tree::CNode * root;
