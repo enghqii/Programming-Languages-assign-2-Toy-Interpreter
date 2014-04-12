@@ -146,7 +146,11 @@ namespace toy
 				// ignore
 				break;
 			case LEX_IDENTIFIER:
-				// not yet
+				{	
+					// just push
+					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, it.name);
+					stk.push(node);
+				}
 				break;
 			case LEX_CONSTANT:
 				{
@@ -193,10 +197,17 @@ namespace toy
 			}
 		}
 
+		// TODO : merge all nodes in stack?
 		// TODO : 스택에 값이 하나만 있음? 을 확인해야함
+		if(stk.empty() == false)
+		{
+			tree::CNode * exp = stk.top();
+			m_pExpTree->SetExpNode(exp);
+		}
+		else
+		{
 
-		tree::CNode * exp = stk.top();
-		m_pExpTree->SetExpNode(exp);
+		}
 	}
 
 	void CParser::GenerateIntermediateCode()

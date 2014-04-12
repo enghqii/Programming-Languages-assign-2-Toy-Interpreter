@@ -3,18 +3,19 @@
 
 #include "Parser.h"
 #include "Interpreter.h"
+#include "FileIO.h"
 
 namespace toy
 {
 	CAdapter::CAdapter(void)
 		:m_strCode(L""),
 		m_strPostFix(L""),
-		m_strIntermediate(L""),
 		m_strResult(L""),
 		m_pParser(NULL)
 	{
 		m_pParser		= new CParser();
 		m_pInterpreter	= new CInterpreter();
+		m_pFileIO		= new CFileIO();
 	}
 
 
@@ -22,8 +23,28 @@ namespace toy
 	{
 		delete m_pParser;
 		delete m_pInterpreter;
+		delete m_pFileIO;
 	}
-	
+
+	bool CAdapter::LoadSource(CString pathName)
+	{
+		std::wstring str(pathName);
+		try
+		{
+			this->m_strCode = m_pFileIO->LoadSource(str);
+		}
+		catch(int err)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	CString CAdapter::GetSourceString()
+	{
+		return CString(m_strCode.c_str());
+	}
+
 	void CAdapter::Parse(std::wstring infix)
 	{
 		this->m_strCode = infix;
@@ -43,12 +64,36 @@ namespace toy
 		}
 	}
 
-	CString CAdapter::GenerateIntermediateString()
+	void CAdapter::GenerateIntermediateString()
+	{
+		m_listIntermediate.clear();
+		m_listIntermediate = m_pParser->GetIntermediateList();
+	}
+	
+	bool CAdapter::SaveIntermediateCode(CString pathName)
+	{
+		return false;
+	}
+
+	bool CAdapter::LoadIntermediateCode(CString pathName)
+	{
+		std::wstring str(pathName);
+		try
+		{
+			m_listIntermediate = m_pFileIO->LoadIntermediateCode(str);
+		}
+		catch(int err)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	CString CAdapter::GetIntermediateString()
 	{
 		CString interms = L"";
-		std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
 
-		for( auto iter : intermList )
+		for( auto iter : m_listIntermediate )
 		{
 			CString str(iter.c_str());
 			interms.Append(str + L"\r\n");
@@ -59,8 +104,8 @@ namespace toy
 
 	void CAdapter::Execute()
 	{
-		std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
-		m_pInterpreter->SetIntermediateCode(intermList);
+		//std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
+		m_pInterpreter->SetIntermediateCode(m_listIntermediate);
 		int res = m_pInterpreter->Execute();
 
 		m_strResult = std::to_wstring(res);

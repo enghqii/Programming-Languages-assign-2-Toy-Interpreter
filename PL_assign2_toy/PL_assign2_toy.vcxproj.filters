@@ -54,6 +54,9 @@
     <ClInclude Include="Interpreter.h">
       <Filter>TOY</Filter>
     </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>TOY\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PL_assign2_toy.cpp">
@@ -79,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="Interpreter.cpp">
       <Filter>TOY</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>TOY\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

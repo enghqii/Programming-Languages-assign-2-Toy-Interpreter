@@ -49,7 +49,24 @@ namespace toy
 			}
 			else if( iter.compare(L"IF") == 0 )
 			{
-				// TODO : add if function
+				int rValue = m_stk.top();
+				m_stk.pop();
+
+				int lValue = m_stk.top();
+				m_stk.pop();
+
+				int val; //= lValue - rValue;
+
+				if( lValue > 0 && rValue )
+				{
+					val = rValue;
+				}
+				else
+				{
+					val = 0;
+				}
+
+				m_stk.push(val);
 			}
 			else if( iter.substr(0,4).compare(L"push") == 0 )
 			{

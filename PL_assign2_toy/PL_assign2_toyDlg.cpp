@@ -212,7 +212,14 @@ void CPL_assign2_toyDlg::OnBnClickedButton3()
 	dlg.m_ofn.lpstrInitialDir = szDirectory;
 
 	if(IDOK == dlg.DoModal()){
+		CString strPathName = dlg.GetPathName();
+		//m_Game.LoadGame(strPathName);
 
+		if(m_pToyAdapter->LoadSource(strPathName)){
+			UpdateData(true);
+			m_strInfix = m_pToyAdapter->GetSourceString();
+			UpdateData(false);
+		}
 	}
 }
 
@@ -224,7 +231,8 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 	std::wstring infix(m_strInfix);
 	m_pToyAdapter->Parse(infix);
 
-	m_strPost = m_pToyAdapter->GenerateIntermediateString();
+	m_pToyAdapter->GenerateIntermediateString();
+	m_strPost = m_pToyAdapter->GetIntermediateString();
 
 	UpdateData(false);
 }
@@ -245,7 +253,24 @@ void CPL_assign2_toyDlg::OnBnClickedButton6()
 /* on load intermediate code */
 void CPL_assign2_toyDlg::OnBnClickedButton7()
 {
+	// Obtain current dir path
+	TCHAR szDirectory[512] = L"";
+	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
 
+	// File selecting dir
+	CFileDialog dlg(true, NULL,NULL, OFN_HIDEREADONLY);
+	dlg.m_ofn.lpstrInitialDir = szDirectory;
+
+	if(IDOK == dlg.DoModal()){
+		CString strPathName = dlg.GetPathName();
+		//m_Game.LoadGame(strPathName);
+
+		if(m_pToyAdapter->LoadIntermediateCode(strPathName)){
+			UpdateData(true);
+			m_strPost= m_pToyAdapter->GetIntermediateString();
+			UpdateData(false);
+		}
+	}
 }
 
 /* on execution */
