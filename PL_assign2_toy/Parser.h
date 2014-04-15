@@ -50,6 +50,7 @@ namespace toy
 
 		void						Parse(std::wstring infix); 
 		std::list<std::wstring>		GetIntermediateList();
+		std::wstring				GetPostFixString();
 
 	private:
 
@@ -57,6 +58,9 @@ namespace toy
 		void LexicalAnalysis(std::wstring infix);
 		// Generate Parsing tree
 		void SyntaxAnalysis();
+
+		// Generate Post Fix
+		void GeneratePostFix();
 		// Generate Intermediate codes
 		void GenerateIntermediateCode();
 
@@ -64,6 +68,8 @@ namespace toy
 		void OutputDebugList();
 
 	private:
+
+		std::wstring			m_strPostFix;
 		
 		std::list<CLexeme>		m_listLexemes;
 		CTree *					m_pExpTree;

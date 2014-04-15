@@ -8,6 +8,7 @@ namespace toy
 {
 
 	CParser::CParser(void)
+		:m_strPostFix(L"")
 	{
 		m_listLexemes.clear();
 		m_listIntermCodes.clear();
@@ -35,6 +36,7 @@ namespace toy
 		/*m_pExpTree->OutputInorderTraverse();
 		m_pExpTree->OutputPostorderTraverse();*/
 
+		this->GeneratePostFix();
 		this->GenerateIntermediateCode();
 
 	}
@@ -42,6 +44,11 @@ namespace toy
 	std::list<std::wstring> CParser::GetIntermediateList()
 	{
 		return this->m_listIntermCodes;
+	}
+
+	std::wstring CParser::GetPostFixString()
+	{
+		return this->m_strPostFix;
 	}
 
 	/* generate Lexme List */
@@ -208,6 +215,11 @@ namespace toy
 		{
 
 		}
+	}
+
+	void CParser::GeneratePostFix()
+	{
+		m_strPostFix = m_pExpTree->GeneratePostFixString();
 	}
 
 	void CParser::GenerateIntermediateCode()

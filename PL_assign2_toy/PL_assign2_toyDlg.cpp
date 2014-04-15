@@ -231,8 +231,13 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 	std::wstring infix(m_strInfix);
 	m_pToyAdapter->Parse(infix);
 
+	// generate interms
 	m_pToyAdapter->GenerateIntermediateString();
-	m_strPost = m_pToyAdapter->GetIntermediateString();
+
+	// get and append strings
+	m_strPost = m_pToyAdapter->GetPostFixString();
+	m_strPost.Append(L"\r\n");
+	m_strPost.Append(m_pToyAdapter->GetIntermediateString());
 
 	UpdateData(false);
 }

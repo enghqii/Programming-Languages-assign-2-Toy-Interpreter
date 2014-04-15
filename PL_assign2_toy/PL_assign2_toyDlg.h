@@ -36,9 +36,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+
 	CString m_strInfix;
 	CString m_strPost;
 	CString m_strResult;
+
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedButton3();

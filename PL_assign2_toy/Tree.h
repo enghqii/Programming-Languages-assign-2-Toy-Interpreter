@@ -51,6 +51,7 @@ namespace toy
 		void SetExpNode(tree::CNode * exp);
 
 		std::list<std::wstring> GeneratePostorderInterms();
+		std::wstring			GeneratePostFixString();
 
 		// DEBUG
 		void OutputInorderTraverse();
@@ -60,6 +61,7 @@ namespace toy
 
 		// rekursiv
 		void PostInterm(tree::CNode *n, std::list<std::wstring>& interms);
+		void PostFix(tree::CNode *n, std::wstring& postFix);
 
 		// DEBUG
 		void Inorder(tree::CNode *n);

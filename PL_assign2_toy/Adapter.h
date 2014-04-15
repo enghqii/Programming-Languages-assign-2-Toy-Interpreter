@@ -23,17 +23,22 @@ namespace toy
 
 	public:
 
+		// Controls
 		bool		LoadSource(CString pathName);
 		CString		GetSourceString();
 
+		// Parser
 		void		Parse(std::wstring infix);
+
+		CString		GetPostFixString();
+
 		void		GenerateIntermediateString();
 
 		bool		SaveIntermediateCode(CString pathName);
-
 		bool		LoadIntermediateCode(CString pathName);
 		CString		GetIntermediateString();
 
+		// Executions
 		void		Execute();
 		CString		GetResultString();
 

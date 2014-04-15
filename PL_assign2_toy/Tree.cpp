@@ -71,6 +71,13 @@ namespace toy
 		return interms;
 	}
 
+	std::wstring CTree::GeneratePostFixString()
+	{
+		std::wstring postFix;
+		this->PostFix(root->GetLeft(), postFix);
+		return postFix;
+	}
+
 	void CTree::PostInterm(tree::CNode *n, std::list<std::wstring>& interms)
 	{
 		if(n == NULL)
@@ -91,6 +98,20 @@ namespace toy
 			str = L"push " + str;
 			interms.push_back(str);
 		}
+	}
+
+	void CTree::PostFix(tree::CNode *n, std::wstring& postFix)
+	{
+		if(n == NULL)
+		{
+			return;
+		}
+
+		PostFix(n->GetLeft(), postFix);
+		PostFix(n->GetRight(), postFix);
+		
+		std::wstring str = L" " + n->GetName();
+		postFix.append(str);
 	}
 
 	void CTree::OutputInorderTraverse()

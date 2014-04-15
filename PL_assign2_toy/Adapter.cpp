@@ -64,6 +64,12 @@ namespace toy
 		}
 	}
 
+	CString CAdapter::GetPostFixString()
+	{
+		m_strPostFix = m_pParser->GetPostFixString();
+		return CString(m_strPostFix.c_str());
+	}
+
 	void CAdapter::GenerateIntermediateString()
 	{
 		m_listIntermediate.clear();
