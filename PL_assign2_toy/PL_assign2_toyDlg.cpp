@@ -227,17 +227,22 @@ void CPL_assign2_toyDlg::OnBnClickedButton3()
 void CPL_assign2_toyDlg::OnBnClickedButton4()
 {
 	UpdateData(true);
-	
+
 	std::wstring infix(m_strInfix);
-	m_pToyAdapter->Parse(infix);
+	if( m_pToyAdapter->Parse(infix) )
+	{
+		// generate interms
+		m_pToyAdapter->GenerateIntermediateString();
 
-	// generate interms
-	m_pToyAdapter->GenerateIntermediateString();
-
-	// get and append strings
-	m_strPost = m_pToyAdapter->GetPostFixString();
-	m_strPost.Append(L"\r\n");
-	m_strPost.Append(m_pToyAdapter->GetIntermediateString());
+		// get and append strings
+		m_strPost = m_pToyAdapter->GetPostFixString();
+		m_strPost.Append(L"\r\n");
+		m_strPost.Append(m_pToyAdapter->GetIntermediateString());
+	}
+	else
+	{
+		m_strResult = m_pToyAdapter->GetResultString();
+	}
 
 	UpdateData(false);
 }
@@ -251,7 +256,24 @@ void CPL_assign2_toyDlg::OnBnClickedButton5()
 /* on save intermediate code */
 void CPL_assign2_toyDlg::OnBnClickedButton6()
 {
+	// Obtain current dir path
+	TCHAR szDirectory[512] = L"";
+	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
 
+	// File selecting dir
+	CFileDialog dlg(false, NULL, NULL, OFN_OVERWRITEPROMPT, NULL);
+	dlg.m_ofn.lpstrInitialDir = szDirectory;
+
+	if(IDOK == dlg.DoModal()){
+		CString strPathName = dlg.GetPathName();
+		if(m_pToyAdapter->SaveIntermediateCode(strPathName))
+		{
+			MessageBox(L"Save done.");
+		}
+		else{
+			MessageBox(L"Save failed.");
+		}
+	}
 }
 
 

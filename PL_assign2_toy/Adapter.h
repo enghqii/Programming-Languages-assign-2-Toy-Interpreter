@@ -28,7 +28,7 @@ namespace toy
 		CString		GetSourceString();
 
 		// Parser
-		void		Parse(std::wstring infix);
+		bool		Parse(std::wstring infix);
 
 		CString		GetPostFixString();
 

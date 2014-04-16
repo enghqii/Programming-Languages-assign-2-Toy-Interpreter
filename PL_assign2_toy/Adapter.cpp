@@ -45,7 +45,7 @@ namespace toy
 		return CString(m_strCode.c_str());
 	}
 
-	void CAdapter::Parse(std::wstring infix)
+	bool CAdapter::Parse(std::wstring infix)
 	{
 		this->m_strCode = infix;
 		// generate 'm_strPostFix'
@@ -58,19 +58,29 @@ namespace toy
 			switch(err)
 			{
 			case ERR_BRACE_MISMATCH:
-				OutputDebugString(L"BRACE MISMATCH\n");
-				break;
+				m_strResult = L"BRACE MISMATCH\n";
+				return false;
 			case ERR_INVALID_INT:
-				OutputDebugString(L"INVALID INT\n");
-				break;
+				m_strResult = L"INVALID INT\n";
+				return false;
 			case ERR_INVALID_CHAR:
-				OutputDebugString(L"INVALID CHARACTER\n");
-				break;
+				m_strResult = L"INVALID CHARACTER\n";
+				return false;
+			case ERR_DUPLICATE:
+				m_strResult = L"DUPLICATE SAME TYPE";
+				return false;
+			case ERR_INVALID_OPERATOR:
+				m_strResult = L"INVALID OPERATOR";
+				return false;
+			case ERR_INVALID_OPERAND:
+				m_strResult = L"INVALID OPERAND";
+				return false;
 			case ERR_NOTHING:
 				OutputDebugString(m_strCode.c_str());
-				break;
+				return false;
 			}
 		}
+		return true;
 	}
 
 	CString CAdapter::GetPostFixString()
@@ -87,7 +97,16 @@ namespace toy
 	
 	bool CAdapter::SaveIntermediateCode(CString pathName)
 	{
-		return false;
+		std::wstring str(pathName);
+		try
+		{
+			m_pFileIO->SaveIntermediateCode(str, m_listIntermediate);
+		}
+		catch(int err)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	bool CAdapter::LoadIntermediateCode(CString pathName)
