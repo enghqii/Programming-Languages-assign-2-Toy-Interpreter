@@ -21,6 +21,7 @@ namespace toy
 		delete m_pExpTree;
 	}
 
+	/* 던져지는 예외들은 어댑터에서 처리됩니다. */
 	void CParser::Parse(std::wstring infix)
 	{
 		// Lexical Analysis
@@ -56,6 +57,8 @@ namespace toy
 	{
 		m_listLexemes.clear();
 
+		int brace = 0;
+
 		int len = infix.length();
 		for(int i =0; i < len; i++)
 		{
@@ -68,10 +71,12 @@ namespace toy
 				
 				if( '(' == infix[i] )
 				{
+					brace++;
 					lexeme.type = LEX_BRACE_OPEN;
 				}
 				else if( ')' == infix[i] )
 				{
+					brace--;
 					lexeme.type = LEX_BRACE_CLOSE;
 				}
 
@@ -110,8 +115,15 @@ namespace toy
 
 				do
 				{
-					lexeme.name += infix[j];
-					j++;
+					if(infix[j] == '.')
+					{
+						throw ERR_INVALID_INT;
+					}
+					else
+					{
+						lexeme.name += infix[j];
+						j++;
+					}
 				}
 				while( (j < len) && (isdigit(infix[j]) || infix[j] == '.') );
 
@@ -119,12 +131,23 @@ namespace toy
 
 				lexeme.type = LEX_CONSTANT;
 				m_listLexemes.push_back(lexeme);
-			}
-			else if(isspace(infix[i])){
 
+			}
+			else if(isspace(infix[i]))
+			{
 				// whitespace (ignore)
 				continue;
 			}
+			else
+			{
+				throw ERR_INVALID_CHAR;
+			}
+		}
+		
+		// TODO : 괄호 갯수 맞는지 판별
+		if( brace != 0 )
+		{
+			throw ERR_BRACE_MISMATCH;
 		}
 	}
 
@@ -139,7 +162,6 @@ namespace toy
 	
 	void CParser::SyntaxAnalysis()
 	{
-		// TODO : 괄호 갯수 맞는지 판별
 
 		SYNTAX_ERR err = ERR_NOTHING;
 		// throw err;
@@ -162,6 +184,16 @@ namespace toy
 			case LEX_CONSTANT:
 				{
 					// TODO : 상수값 유효성 판별
+					
+					try
+					{
+						int val = std::stoi(it.name);
+						__asm{nop}
+					}
+					catch(std::invalid_argument err)
+					{
+						throw ERR_INVALID_INT;
+					}
 
 					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, it.name);
 					stk.push(node);
