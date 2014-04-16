@@ -57,6 +57,15 @@ namespace toy
 		{
 			switch(err)
 			{
+			case ERR_BRACE_MISMATCH:
+				OutputDebugString(L"BRACE MISMATCH\n");
+				break;
+			case ERR_INVALID_INT:
+				OutputDebugString(L"INVALID INT\n");
+				break;
+			case ERR_INVALID_CHAR:
+				OutputDebugString(L"INVALID CHARACTER\n");
+				break;
 			case ERR_NOTHING:
 				OutputDebugString(m_strCode.c_str());
 				break;
