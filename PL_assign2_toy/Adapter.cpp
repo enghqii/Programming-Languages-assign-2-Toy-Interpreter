@@ -147,7 +147,17 @@ namespace toy
 	{
 		//std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
 		m_pInterpreter->SetIntermediateCode(m_listIntermediate);
-		int res = m_pInterpreter->Execute();
+		int res = 0;
+
+		try
+		{
+			res = m_pInterpreter->Execute();
+		}
+		catch(int err)
+		{
+			m_strResult = L"undefined";
+			return;
+		}
 
 		m_strResult = std::to_wstring(res);
 	}

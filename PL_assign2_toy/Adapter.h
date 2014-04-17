@@ -50,8 +50,6 @@ namespace toy
 
 	private:
 
-		// TODO : use those vars
-
 		// Raw
 		std::wstring			m_strCode;			// infix TOY code
 

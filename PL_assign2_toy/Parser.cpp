@@ -33,9 +33,6 @@ namespace toy
 		// Syntax Analysis
 		// TODO : 문법 오류 핸들링 해야함. 다음 라인으로 진행되는건 정상동작을 보증한다는 뜻. - DONE
 		this->SyntaxAnalysis();
-		
-		/*m_pExpTree->OutputInorderTraverse();
-		m_pExpTree->OutputPostorderTraverse();*/
 
 		this->GeneratePostFix();
 		this->GenerateIntermediateCode();

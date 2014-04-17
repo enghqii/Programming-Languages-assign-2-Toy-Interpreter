@@ -19,7 +19,10 @@ namespace toy
 
 	int CInterpreter::Execute()
 	{
-		// TODO : 생각해볼것 : begin 검사를 따로 해줘야 함?
+		if( m_listInterms.begin()->compare(L"begin") != 0)
+		{
+			throw -1;
+		}
 
 		for( auto iter : m_listInterms )
 		{
@@ -55,7 +58,7 @@ namespace toy
 				int lValue = m_stk.top();
 				m_stk.pop();
 
-				int val; //= lValue - rValue;
+				int val;
 
 				if( lValue > 0 && rValue )
 				{
@@ -72,12 +75,26 @@ namespace toy
 			{
 				int len = iter.length();
 				std::wstring str = iter.substr(5,len);
-				int val = std::stoi(str);
 
-				m_stk.push(val);
+				try
+				{
+					int val = std::stoi(str);
+					m_stk.push(val);
+				}
+				catch(std::invalid_argument err)
+				{
+					throw -1;
+				}
 			}
 		}
 
-		return m_stk.top();
+		if( m_stk.empty() == false )
+		{
+			return m_stk.top();
+		}
+		else
+		{
+			throw -1;
+		}
 	}
 }
