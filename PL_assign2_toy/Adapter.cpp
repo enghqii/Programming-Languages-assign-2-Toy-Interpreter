@@ -58,26 +58,26 @@ namespace toy
 			switch(err)
 			{
 			case ERR_BRACE_MISMATCH:
-				m_strResult = L"BRACE MISMATCH\n";
+				m_strResult = L"error : brace mismatch\n";
 				return false;
 			case ERR_INVALID_INT:
-				m_strResult = L"INVALID INT\n";
+				m_strResult = L"error : invalid integer\n";
 				return false;
 			case ERR_INVALID_CHAR:
-				m_strResult = L"INVALID CHARACTER\n";
+				m_strResult = L"error : invalid character\n";
 				return false;
 
 			case ERR_UNEXPECTED_BRACE_OPEN:
-				m_strResult = L"ERR_UNEXPECTED_BRACE_OPEN\n";
+				m_strResult = L"error : unexpected brace open detected\n";
 				return false;
 			case ERR_UNEXPECTED_BRACE_CLOSE:
-				m_strResult = L"ERR_UNEXPECTED_BRACE_CLOSE\n";
+				m_strResult = L"error : unexpected brace close detected\n";
 				return false;
 			case ERR_UNEXPECTED_OPERATOR:
-				m_strResult = L"ERR_UNEXPECTED_OPERATOR\n";
+				m_strResult = L"error : unexpected operator detected\n";
 				return false;
 			case ERR_UNEXPECTED_OPERAND:
-				m_strResult = L"ERR_UNEXPECTED_OPERAND\n";
+				m_strResult = L"error : unexpected operand detected\n";
 				return false;
 
 			case ERR_NOTHING:
@@ -85,6 +85,8 @@ namespace toy
 				return false;
 			}
 		}
+
+		m_strResult = L" >> PARSE SUCCEED << ";
 		return true;
 	}
 

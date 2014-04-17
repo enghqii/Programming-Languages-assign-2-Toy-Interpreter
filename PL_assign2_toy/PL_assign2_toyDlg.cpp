@@ -241,8 +241,9 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 	}
 	else
 	{
-		m_strResult = m_pToyAdapter->GetResultString();
 	}
+	
+	m_strResult = m_pToyAdapter->GetResultString();
 
 	UpdateData(false);
 }

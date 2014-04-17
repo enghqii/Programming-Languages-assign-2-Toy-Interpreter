@@ -165,7 +165,8 @@ namespace toy
 
 	/* ------------------------------------------------------------------
 	 *	Generate expression tree, throws Syntax error if there's
-	 *	throws : ERR_INVALID_INT, ERR_INVALID_CHAR, ERR_BRACE_MISMATCH
+	 *	throws : ERR_UNEXPECTED_BRACE_OPEN, ERR_UNEXPECTED_BRACE_CLOSE, 
+	 ERR_UNEXPECTED_OPERATOR, ERR_UNEXPECTED_OPERAND, ERR_INVALID_INT
 	 -------------------------------------------------------------------- */
 	void CParser::SyntaxAnalysis()
 	{
