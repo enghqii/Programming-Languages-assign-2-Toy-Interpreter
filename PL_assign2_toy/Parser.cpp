@@ -172,7 +172,6 @@ namespace toy
 		// throw err;
 		std::stack<tree::CNode *> stk;
 
-		// TODO : 올 타입을 예상해보는건 어때 expecto!
 		LEXEME_TYPE lastType = LEX_NULL;
 
 		for( auto it : m_listLexemes ) 
@@ -181,7 +180,9 @@ namespace toy
 			{
 			case LEX_BRACE_OPEN:
 
-				if(lastType != LEX_BRACE_OPEN && lastType != LEX_NULL)
+				if(lastType != LEX_BRACE_OPEN && 
+					lastType != LEX_NULL && 
+					lastType != LEX_OPERATOR )
 				{
 					throw ERR_UNEXPECTED_BRACE_OPEN;
 				}
@@ -231,7 +232,8 @@ namespace toy
 				{
 					if(lastType != LEX_NULL && 
 						lastType != LEX_CONSTANT &&
-						lastType != LEX_IDENTIFIER)
+						lastType != LEX_IDENTIFIER &&
+						lastType != LEX_BRACE_CLOSE )
 					{
 						throw ERR_UNEXPECTED_OPERATOR;
 					}
