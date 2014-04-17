@@ -66,15 +66,7 @@ namespace toy
 			case ERR_INVALID_CHAR:
 				m_strResult = L"INVALID CHARACTER\n";
 				return false;
-			case ERR_DUPLICATE:
-				m_strResult = L"DUPLICATE SAME TYPE";
-				return false;
-			case ERR_INVALID_OPERATOR:
-				m_strResult = L"INVALID OPERATOR";
-				return false;
-			case ERR_INVALID_OPERAND:
-				m_strResult = L"INVALID OPERAND";
-				return false;
+
 			case ERR_NOTHING:
 				OutputDebugString(m_strCode.c_str());
 				return false;

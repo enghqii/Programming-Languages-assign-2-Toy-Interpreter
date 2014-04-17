@@ -52,7 +52,10 @@ namespace toy
 		return this->m_strPostFix;
 	}
 
-	/* generate Lexme List */
+	/* ------------------------------------------------------------------
+	 *	Generate Lexme List
+	 *	throws : ERR_INVALID_INT, ERR_INVALID_CHAR, ERR_BRACE_MISMATCH
+	 -------------------------------------------------------------------- */
 	void CParser::LexicalAnalysis(std::wstring infix)
 	{
 		m_listLexemes.clear();
@@ -159,13 +162,18 @@ namespace toy
 			OutputDebugString(str.c_str());
 		}
 	}
-	
+
+	/* ------------------------------------------------------------------
+	 *	Generate expression tree, throws Syntax error if there's
+	 *	throws : ERR_INVALID_INT, ERR_INVALID_CHAR, ERR_BRACE_MISMATCH
+	 -------------------------------------------------------------------- */
 	void CParser::SyntaxAnalysis()
 	{
-
-		SYNTAX_ERR err = ERR_NOTHING;
 		// throw err;
 		std::stack<tree::CNode *> stk;
+
+		// TODO : 올 타입을 예상해보는건 어때 expecto!
+		LEXEME_TYPE lastType = LEX_NULL;
 
 		for( auto it : m_listLexemes ) 
 		{
@@ -183,8 +191,7 @@ namespace toy
 				break;
 			case LEX_CONSTANT:
 				{
-					// TODO : 상수값 유효성 판별
-					
+					// TODO : 상수값 유효성 판별 - DONE
 					try
 					{
 						int val = std::stoi(it.name);
@@ -201,39 +208,53 @@ namespace toy
 				break;
 			case LEX_OPERATOR:
 				{
+					
 					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERATOR, it.name);
 					stk.push(node);
 				}
 				break;
 			case LEX_BRACE_CLOSE:
 				{
-					tree::CNode * rValue;
-					tree::CNode * op;
-					tree::CNode * lValue;
+					tree::CNode * rValue	= NULL;
+					tree::CNode * op		= NULL;
+					tree::CNode * lValue	= NULL;
 
-					rValue = stk.top();
-					stk.pop();
+					if( stk.empty() == false )
+					{
+						rValue = stk.top();
+						stk.pop();
+					}
 
-					op = stk.top();
-					stk.pop();
+					if( stk.empty() == false )
+					{
+						op = stk.top();
+						stk.pop();
+					}
+					
+					if( stk.empty() == false )
+					{
+						lValue = stk.top();
+						stk.pop();
+					}
 
-					lValue = stk.top();
-					stk.pop();
-
-					// TODO : rValue , lValue , op의 노드 타입 검사 필요
+					// TODO : rValue , lValue , op의 노드 타입 검사 필요 
 
 					op->SetLeft(lValue);
 					op->SetRight(rValue);
 
 					stk.push(op);
 
-					// TODO : 스택 push, pop 할때 익셉션 처리 해야 할껄?
+					// TODO : 스택 push, pop 할때 익셉션 처리 해야 할껄? - 
 				}
 				break;
+
 			case LEX_NULL:
+
 			default:
 				break;
 			}
+
+			lastType =  it.type;
 		}
 
 		// TODO : merge all nodes in stack?
