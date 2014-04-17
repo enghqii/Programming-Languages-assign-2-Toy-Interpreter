@@ -213,12 +213,17 @@ void CPL_assign2_toyDlg::OnBnClickedButton3()
 
 	if(IDOK == dlg.DoModal()){
 		CString strPathName = dlg.GetPathName();
-		//m_Game.LoadGame(strPathName);
 
 		if(m_pToyAdapter->LoadSource(strPathName)){
+
 			UpdateData(true);
 			m_strInfix = m_pToyAdapter->GetSourceString();
 			UpdateData(false);
+			MessageBox(L"Load done.");
+		}
+		else
+		{
+			MessageBox(L"Load failed.");
 		}
 	}
 }
@@ -236,7 +241,7 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 
 		// get and append strings
 		m_strPost = m_pToyAdapter->GetPostFixString();
-		m_strPost.Append(L"\r\n");
+		m_strPost.Append(L"\r\n\r\n");
 		m_strPost.Append(m_pToyAdapter->GetIntermediateString());
 	}
 	else
@@ -297,6 +302,11 @@ void CPL_assign2_toyDlg::OnBnClickedButton7()
 			UpdateData(true);
 			m_strPost= m_pToyAdapter->GetIntermediateString();
 			UpdateData(false);
+			MessageBox(L"Load done.");
+		}
+		else
+		{
+			MessageBox(L"Load failed.");
 		}
 	}
 }
