@@ -25,13 +25,13 @@ namespace toy
 	void CParser::Parse(std::wstring infix)
 	{
 		// Lexical Analysis
-		// TODO : 쓸모없는 문자가 있거나 여튼 이상한 문자열이 들어오면 throw.
+		// TODO : 쓸모없는 문자가 있거나 여튼 이상한 문자열이 들어오면 throw. - DONE
 		this->LexicalAnalysis(infix);
 
 		OutputDebugList();
 
 		// Syntax Analysis
-		// TODO : 문법 오류 핸들링 해야함. 다음 라인으로 진행되는건 정상동작을 보증한다는 뜻.
+		// TODO : 문법 오류 핸들링 해야함. 다음 라인으로 진행되는건 정상동작을 보증한다는 뜻. - DONE
 		this->SyntaxAnalysis();
 		
 		/*m_pExpTree->OutputInorderTraverse();
