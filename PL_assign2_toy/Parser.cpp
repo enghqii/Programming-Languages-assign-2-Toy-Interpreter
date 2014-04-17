@@ -180,10 +180,23 @@ namespace toy
 			switch( it.type )
 			{
 			case LEX_BRACE_OPEN:
-				// ignore
+
+				if(lastType != LEX_BRACE_OPEN && lastType != LEX_NULL)
+				{
+					throw ERR_UNEXPECTED_BRACE_OPEN;
+				}
 				break;
+
 			case LEX_IDENTIFIER:
 				{	
+					if(lastType != LEX_NULL && 
+						lastType != LEX_BRACE_OPEN &&
+						lastType != LEX_BRACE_CLOSE &&
+						lastType != LEX_OPERATOR )
+					{
+						throw ERR_UNEXPECTED_OPERAND;
+					}
+
 					// just push
 					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, it.name);
 					stk.push(node);
@@ -191,6 +204,14 @@ namespace toy
 				break;
 			case LEX_CONSTANT:
 				{
+					if(lastType != LEX_NULL &&
+						lastType != LEX_BRACE_OPEN &&
+						lastType != LEX_BRACE_CLOSE &&
+						lastType != LEX_OPERATOR )
+					{
+						throw ERR_UNEXPECTED_OPERAND;
+					}
+
 					// TODO : 상수값 유효성 판별 - DONE
 					try
 					{
@@ -208,13 +229,27 @@ namespace toy
 				break;
 			case LEX_OPERATOR:
 				{
-					
+					if(lastType != LEX_NULL && 
+						lastType != LEX_CONSTANT &&
+						lastType != LEX_IDENTIFIER)
+					{
+						throw ERR_UNEXPECTED_OPERATOR;
+					}
+
 					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERATOR, it.name);
 					stk.push(node);
 				}
 				break;
 			case LEX_BRACE_CLOSE:
 				{
+					if(	lastType != LEX_CONSTANT &&
+						lastType != LEX_IDENTIFIER &&
+						lastType != LEX_BRACE_CLOSE)
+					{
+						throw ERR_UNEXPECTED_BRACE_CLOSE;
+					}
+
+					// merging nodes
 					tree::CNode * rValue	= NULL;
 					tree::CNode * op		= NULL;
 					tree::CNode * lValue	= NULL;

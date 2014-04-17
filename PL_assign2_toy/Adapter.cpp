@@ -67,6 +67,19 @@ namespace toy
 				m_strResult = L"INVALID CHARACTER\n";
 				return false;
 
+			case ERR_UNEXPECTED_BRACE_OPEN:
+				m_strResult = L"ERR_UNEXPECTED_BRACE_OPEN\n";
+				return false;
+			case ERR_UNEXPECTED_BRACE_CLOSE:
+				m_strResult = L"ERR_UNEXPECTED_BRACE_CLOSE\n";
+				return false;
+			case ERR_UNEXPECTED_OPERATOR:
+				m_strResult = L"ERR_UNEXPECTED_OPERATOR\n";
+				return false;
+			case ERR_UNEXPECTED_OPERAND:
+				m_strResult = L"ERR_UNEXPECTED_OPERAND\n";
+				return false;
+
 			case ERR_NOTHING:
 				OutputDebugString(m_strCode.c_str());
 				return false;
