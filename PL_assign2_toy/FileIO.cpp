@@ -45,6 +45,7 @@ namespace toy
 		{
 			fout<<iter<<std::endl;
 		}
+		return true;
 	}
 	
 	/* throws -1 if there's an FSTREAM exception */
