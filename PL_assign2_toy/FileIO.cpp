@@ -16,7 +16,7 @@ namespace toy
 	}
 
 	/* throws -1 if there's an FSTREAM exception */
-	std::wstring CFileIO::LoadSource(std::wstring pathName)
+	std::list<std::wstring> CFileIO::LoadSource(std::wstring pathName)
 	{
 		std::wifstream fin;
 		fin.open(pathName.c_str());
@@ -25,10 +25,18 @@ namespace toy
 			throw -1;
 		}
 
-		std::wstring line = L"";
-		std::getline(fin, line);
+		std::list<std::wstring> code;
 
-		return line;
+		// BLAME
+		while(fin.eof() == false)
+		{
+			std::wstring line = L"";
+			std::getline(fin, line);
+
+			code.push_back(line);
+		}
+
+		return code;
 	}
 	
 	/* throws -1 if there's an FSTREAM exception */
@@ -64,6 +72,7 @@ namespace toy
 		{
 			interms.push_back(line);
 		}
+
 
 		return interms;
 	}

@@ -51,7 +51,8 @@ namespace toy
 		CParser(void);
 		~CParser(void);
 
-		void						Parse(std::wstring infix); 
+		void						Parse(std::list<std::wstring> code);
+
 		std::list<std::wstring>		GetIntermediateList();
 		std::wstring				GetPostFixString();
 

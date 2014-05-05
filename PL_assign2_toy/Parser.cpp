@@ -22,16 +22,17 @@ namespace toy
 	}
 
 	/* 던져지는 예외들은 어댑터에서 처리됩니다. */
-	void CParser::Parse(std::wstring infix)
+	void CParser::Parse(std::list<std::wstring> code)
 	{
 		// Lexical Analysis
-		// TODO : 쓸모없는 문자가 있거나 여튼 이상한 문자열이 들어오면 throw. - DONE
-		this->LexicalAnalysis(infix);
+		for(std::wstring line : code)
+		{
+			this->LexicalAnalysis(line);
+		}
 
 		OutputDebugList();
 
 		// Syntax Analysis
-		// TODO : 문법 오류 핸들링 해야함. 다음 라인으로 진행되는건 정상동작을 보증한다는 뜻. - DONE
 		this->SyntaxAnalysis();
 
 		this->GeneratePostFix();
@@ -55,7 +56,7 @@ namespace toy
 	 -------------------------------------------------------------------- */
 	void CParser::LexicalAnalysis(std::wstring infix)
 	{
-		m_listLexemes.clear();
+		///m_listLexemes.clear();
 
 		int brace = 0;
 

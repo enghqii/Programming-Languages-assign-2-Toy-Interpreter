@@ -28,7 +28,7 @@ namespace toy
 		CString		GetSourceString();
 
 		// Parser
-		bool		Parse(std::wstring infix);
+		bool		Parse(std::list<std::wstring> infix);
 
 		CString		GetPostFixString();
 
@@ -51,7 +51,7 @@ namespace toy
 	private:
 
 		// Raw
-		std::wstring			m_strCode;			// infix TOY code
+		std::list<std::wstring>	m_listCode;			// infix TOY code
 
 		// pass 1
 		std::wstring			m_strPostFix;		// postfix TOY code

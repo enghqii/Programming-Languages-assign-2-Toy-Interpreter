@@ -8,8 +8,7 @@
 namespace toy
 {
 	CAdapter::CAdapter(void)
-		:m_strCode(L""),
-		m_strPostFix(L""),
+		:m_strPostFix(L""),
 		m_strResult(L""),
 		m_pParser(NULL)
 	{
@@ -31,7 +30,7 @@ namespace toy
 		std::wstring str(pathName);
 		try
 		{
-			this->m_strCode = m_pFileIO->LoadSource(str);
+			this->m_listCode = m_pFileIO->LoadSource(str);
 		}
 		catch(int err)
 		{
@@ -42,16 +41,23 @@ namespace toy
 
 	CString CAdapter::GetSourceString()
 	{
-		return CString(m_strCode.c_str());
+		CString str;
+		for(std::wstring wstr : m_listCode)
+		{
+			str.Append(wstr.c_str());
+			str.Append(L"\r\n");
+		}
+		return str;
 	}
 
-	bool CAdapter::Parse(std::wstring infix)
+	bool CAdapter::Parse(std::list<std::wstring> infix)
 	{
-		this->m_strCode = infix;
+		this->m_listCode = infix;
+
 		// generate 'm_strPostFix'
 		try
 		{
-			m_pParser->Parse(m_strCode);
+			m_pParser->Parse(m_listCode);
 		}
 		catch(SYNTAX_ERR err)
 		{
@@ -81,7 +87,6 @@ namespace toy
 				return false;
 
 			case ERR_NOTHING:
-				OutputDebugString(m_strCode.c_str());
 				return false;
 			}
 		}

@@ -233,8 +233,24 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 {
 	UpdateData(true);
 
-	std::wstring infix(m_strInfix);
-	if( m_pToyAdapter->Parse(infix) )
+	std::list<std::wstring> sources;
+	sources.clear();
+
+	/* Separate strings line by line */
+	{
+		// Tokenize has side-effect on 'curpos'
+		int		curpos = 0;
+		CString resToken = m_strInfix.Tokenize(L"\r\n", curpos);
+
+		while (resToken != _T(""))
+		{
+			std::wstring wstr = resToken;
+			sources.push_back(wstr);
+			resToken = m_strInfix.Tokenize(L"\r\n", curpos);
+		}
+	}
+
+	if( m_pToyAdapter->Parse(sources) )
 	{
 		// generate interms
 		m_pToyAdapter->GenerateIntermediateString();
