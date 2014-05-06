@@ -24,21 +24,22 @@ namespace toy
 	/* 던져지는 예외들은 어댑터에서 처리됩니다. */
 	void CParser::Parse(std::list<std::wstring> code)
 	{
-		m_listLexemes.clear();
-		m_listIntermCodes.clear();
 		// TODO : clear exp tree
 		m_pExpTree->Clear();
+		m_listIntermCodes.clear();
 
 		// Lexical Analysis
 		for(std::wstring line : code)
 		{
+			m_listLexemes.clear();
+
 			this->LexicalAnalysis(line);
+			OutputDebugList();
+
+			// Syntax Analysis
+			this->SyntaxAnalysis();
 		}
 
-		OutputDebugList();
-
-		// Syntax Analysis
-		this->SyntaxAnalysis();
 
 		this->GeneratePostFix();
 		this->GenerateIntermediateCode();
@@ -299,11 +300,13 @@ namespace toy
 			lastType =  it.type;
 		}
 
+		// 수식 트리 저장
+
 		// TODO : merge all nodes in stack?
 		// TODO : 스택에 값이 하나만 있음? 을 확인해야함
 		if(stk.empty() == false)
 		{
-			m_pExpTree->SetExpNode(stk);
+			m_pExpTree->AddExpTree(stk.top());
 		}
 		else
 		{

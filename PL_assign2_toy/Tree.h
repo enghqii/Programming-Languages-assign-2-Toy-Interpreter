@@ -40,10 +40,6 @@ namespace toy
 		private:
 			CNode *				m_pParent;
 			std::deque<CNode *> m_deqChildren;
-			/*
-			CNode *			m_pLeft;
-			CNode *			m_pRight;
-			*/
 		};
 	}
 
@@ -54,7 +50,7 @@ namespace toy
 		~CTree(void);
 
 		void Clear();
-		void SetExpNode(std::stack<tree::CNode *> exp);
+		void AddExpTree(tree::CNode * node);
 
 		std::list<std::wstring> GeneratePostorderInterms();
 		std::wstring			GeneratePostFixString();
@@ -68,6 +64,5 @@ namespace toy
 	private:
 
 		tree::CNode * root;
-		tree::CNode * curNode;
 	};
 }

@@ -47,7 +47,6 @@ namespace toy
 	CTree::CTree(void)
 	{
 		root = new tree::CNode(NULL, tree::NODE_ROOT, L"root");
-		curNode = root;
 	}
 
 
@@ -62,15 +61,9 @@ namespace toy
 		root->GetChildren().clear();
 	}
 	
-	void CTree::SetExpNode(std::stack<tree::CNode *> exp)
+	void CTree::AddExpTree(tree::CNode * node)
 	{
-		root->GetChildren().clear();
-
-		while(exp.empty() == false)
-		{
-			root->AddRight(exp.top());
-			exp.pop();
-		}
+		root->AddRight(node);
 		__asm{nop}
 	}
 	
