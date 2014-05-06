@@ -199,7 +199,8 @@ namespace toy
 					if(lastType != LEX_NULL && 
 						lastType != LEX_IDENTIFIER &&
 						lastType != LEX_CONSTANT &&
-						lastType != LEX_OPERATOR )
+						lastType != LEX_OPERATOR &&
+						lastType != LEX_BRACE_CLOSE )
 					{
 						throw ERR_UNEXPECTED_OPERAND;
 					}
@@ -214,7 +215,8 @@ namespace toy
 					if(lastType != LEX_NULL && 
 						lastType != LEX_IDENTIFIER &&
 						lastType != LEX_CONSTANT &&
-						lastType != LEX_OPERATOR )
+						lastType != LEX_OPERATOR &&
+						lastType != LEX_BRACE_CLOSE)
 					{
 						throw ERR_UNEXPECTED_OPERAND;
 					}
