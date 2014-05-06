@@ -54,6 +54,9 @@ namespace toy
 	{
 		this->m_listCode = infix;
 
+		m_strPostFix = L"";
+		m_listIntermediate.clear();
+
 		// generate 'm_strPostFix'
 		try
 		{
@@ -126,6 +129,7 @@ namespace toy
 		std::wstring str(pathName);
 		try
 		{
+			m_listIntermediate.clear();
 			m_listIntermediate = m_pFileIO->LoadIntermediateCode(str);
 		}
 		catch(int err)

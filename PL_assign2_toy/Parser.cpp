@@ -24,8 +24,12 @@ namespace toy
 	/* 던져지는 예외들은 어댑터에서 처리됩니다. */
 	void CParser::Parse(std::list<std::wstring> code)
 	{
-		// Lexical Analysis
 		m_listLexemes.clear();
+		m_listIntermCodes.clear();
+		// TODO : clear exp tree
+		m_pExpTree->Clear();
+
+		// Lexical Analysis
 		for(std::wstring line : code)
 		{
 			this->LexicalAnalysis(line);

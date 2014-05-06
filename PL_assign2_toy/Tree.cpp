@@ -53,11 +53,19 @@ namespace toy
 
 	CTree::~CTree(void)
 	{
+		this->Clear();
+	}
+
+	void CTree::Clear()
+	{
 		// TODO : Àç±ÍÀû ³ëµå ÆÄ±« ¿ä¸Á
+		root->GetChildren().clear();
 	}
 	
 	void CTree::SetExpNode(std::stack<tree::CNode *> exp)
 	{
+		root->GetChildren().clear();
+
 		while(exp.empty() == false)
 		{
 			root->AddRight(exp.top());

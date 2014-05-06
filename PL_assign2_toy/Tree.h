@@ -23,15 +23,15 @@ namespace toy
 			CNode(CNode* parent, NodeType type, std::wstring name);
 			~CNode();
 
-			CNode *			GetLeftMost();
-			CNode *			GetRightMost();
+			CNode *				GetLeftMost();
+			CNode *				GetRightMost();
 			
-			void			AddLeft(CNode * left);
-			void			AddRight(CNode * right);
+			void				AddLeft(CNode * left);
+			void				AddRight(CNode * right);
 
-			std::wstring	GetName();
-			NodeType		GetType(){ return this->m_eType; }
-			std::deque<CNode *> GetChildren(){ return this->m_deqChildren; };
+			std::wstring			GetName();
+			NodeType				GetType(){ return this->m_eType; }
+			std::deque<CNode *>&	GetChildren(){ return this->m_deqChildren; };
 
 		private:
 			NodeType		m_eType;
@@ -53,6 +53,7 @@ namespace toy
 		CTree(void);
 		~CTree(void);
 
+		void Clear();
 		void SetExpNode(std::stack<tree::CNode *> exp);
 
 		std::list<std::wstring> GeneratePostorderInterms();
