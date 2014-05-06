@@ -13,7 +13,7 @@ namespace toy
 		~CInterpreter(void);
 
 		void	SetIntermediateCode(std::list<std::wstring>& interms);
-		int		Execute();
+		std::list<int>				Execute();
 
 	private:
 

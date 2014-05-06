@@ -316,8 +316,6 @@ namespace toy
 
 		std::list<std::wstring> postTrav = m_pExpTree->GeneratePostorderInterms();
 		m_listIntermCodes = postTrav;
-		
-		m_listIntermCodes.push_front(std::wstring(L"begin"));
-		m_listIntermCodes.push_back(std::wstring(L"end"));
+
 	}
 }

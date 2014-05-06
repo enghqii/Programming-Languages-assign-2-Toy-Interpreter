@@ -72,7 +72,9 @@ namespace toy
 
 		for( tree::CNode * child : root->GetChildren() )
 		{
+			interms.push_back(L"begin");
 			this->PostInterm(child, interms);
+			interms.push_back(L"end");
 		}
 
 		return interms;

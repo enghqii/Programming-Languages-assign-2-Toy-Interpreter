@@ -17,8 +17,11 @@ namespace toy
 		this->m_listInterms = interms;
 	}
 
-	int CInterpreter::Execute()
+	std::list<int> CInterpreter::Execute()
 	{
+		std::list<int> output;
+		output.clear();
+
 		if( m_listInterms.begin()->compare(L"begin") != 0)
 		{
 			throw -1;
@@ -36,8 +39,19 @@ namespace toy
 			}
 			else if( iter.compare(L"end") == 0 )
 			{
-				// exodus
-				break;
+				
+				if( m_stk.empty() == false )
+				{
+					std::wstring wstr = std::to_wstring(m_stk.top());
+					OutputDebugString(wstr.c_str());
+
+					output.push_back(m_stk.top());
+				}
+				else
+				{
+					throw -1;
+				}
+				
 			}
 			else if( iter.compare(L"MINUS") == 0 )
 			{
@@ -88,6 +102,7 @@ namespace toy
 			}
 		}
 
+		/*
 		if( m_stk.empty() == false )
 		{
 			return m_stk.top();
@@ -95,6 +110,8 @@ namespace toy
 		else
 		{
 			throw -1;
-		}
+		}*/
+
+		return output;
 	}
 }

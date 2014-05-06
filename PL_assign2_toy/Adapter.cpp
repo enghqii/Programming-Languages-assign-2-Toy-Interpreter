@@ -150,9 +150,8 @@ namespace toy
 
 	void CAdapter::Execute()
 	{
-		//std::list<std::wstring> intermList = m_pParser->GetIntermediateList();
 		m_pInterpreter->SetIntermediateCode(m_listIntermediate);
-		int res = 0;
+		std::list<int> res;
 
 		try
 		{
@@ -164,7 +163,13 @@ namespace toy
 			return;
 		}
 
-		m_strResult = std::to_wstring(res);
+		m_strResult = L"";
+
+		for(int val : res)
+		{
+			m_strResult.append(std::to_wstring(val));
+			m_strResult.append(L"\r\n");
+		}
 	}
 
 	CString CAdapter::GetResultString()
