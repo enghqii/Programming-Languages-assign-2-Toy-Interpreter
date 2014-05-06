@@ -25,6 +25,7 @@ namespace toy
 	void CParser::Parse(std::list<std::wstring> code)
 	{
 		// Lexical Analysis
+		m_listLexemes.clear();
 		for(std::wstring line : code)
 		{
 			this->LexicalAnalysis(line);
@@ -179,19 +180,21 @@ namespace toy
 			{
 			case LEX_BRACE_OPEN:
 
+				/*
 				if(lastType != LEX_BRACE_OPEN && 
 					lastType != LEX_NULL && 
 					lastType != LEX_OPERATOR )
 				{
 					throw ERR_UNEXPECTED_BRACE_OPEN;
 				}
+				*/
 				break;
 
 			case LEX_IDENTIFIER:
 				{	
 					if(lastType != LEX_NULL && 
-						lastType != LEX_BRACE_OPEN &&
-						lastType != LEX_BRACE_CLOSE &&
+						lastType != LEX_IDENTIFIER &&
+						lastType != LEX_CONSTANT &&
 						lastType != LEX_OPERATOR )
 					{
 						throw ERR_UNEXPECTED_OPERAND;
@@ -204,9 +207,9 @@ namespace toy
 				break;
 			case LEX_CONSTANT:
 				{
-					if(lastType != LEX_NULL &&
-						lastType != LEX_BRACE_OPEN &&
-						lastType != LEX_BRACE_CLOSE &&
+					if(lastType != LEX_NULL && 
+						lastType != LEX_IDENTIFIER &&
+						lastType != LEX_CONSTANT &&
 						lastType != LEX_OPERATOR )
 					{
 						throw ERR_UNEXPECTED_OPERAND;
@@ -229,10 +232,8 @@ namespace toy
 				break;
 			case LEX_OPERATOR:
 				{
-					if(lastType != LEX_NULL && 
-						lastType != LEX_CONSTANT &&
-						lastType != LEX_IDENTIFIER &&
-						lastType != LEX_BRACE_CLOSE )
+					if(lastType != LEX_NULL &&
+						lastType != LEX_BRACE_OPEN )
 					{
 						throw ERR_UNEXPECTED_OPERATOR;
 					}
@@ -251,19 +252,13 @@ namespace toy
 					}
 
 					// merging nodes
-					tree::CNode * rValue	= NULL;
 					tree::CNode * op		= NULL;
+					tree::CNode * rValue	= NULL;
 					tree::CNode * lValue	= NULL;
-
+												
 					if( stk.empty() == false )
 					{
 						rValue = stk.top();
-						stk.pop();
-					}
-
-					if( stk.empty() == false )
-					{
-						op = stk.top();
 						stk.pop();
 					}
 					
@@ -272,15 +267,20 @@ namespace toy
 						lValue = stk.top();
 						stk.pop();
 					}
+					if( stk.empty() == false )
+					{
+						op = stk.top();
+						stk.pop();
+					}
 
 					// TODO : rValue , lValue , op의 노드 타입 검사 필요 
 
-					op->SetLeft(lValue);
-					op->SetRight(rValue);
+					op->AddRight(lValue);
+					op->AddRight(rValue);
 
 					stk.push(op);
 
-					// TODO : 스택 push, pop 할때 익셉션 처리 해야 할껄? - 
+					// TODO : 스택 push, pop 할때 익셉션 처리 해야 할껄?
 				}
 				break;
 
@@ -297,8 +297,7 @@ namespace toy
 		// TODO : 스택에 값이 하나만 있음? 을 확인해야함
 		if(stk.empty() == false)
 		{
-			tree::CNode * exp = stk.top();
-			m_pExpTree->SetExpNode(exp);
+			m_pExpTree->SetExpNode(stk);
 		}
 		else
 		{

@@ -1,6 +1,8 @@
 #pragma once
 
 #include<string>
+#include<stack>
+#include<deque>
 #include<list>
 
 namespace toy
@@ -21,24 +23,27 @@ namespace toy
 			CNode(CNode* parent, NodeType type, std::wstring name);
 			~CNode();
 
-			CNode *			GetLeft();
-			CNode *			GetRight();
+			CNode *			GetLeftMost();
+			CNode *			GetRightMost();
 			
-			void			SetLeft(CNode * left);
-			void			SetRight(CNode * right);
+			void			AddLeft(CNode * left);
+			void			AddRight(CNode * right);
 
 			std::wstring	GetName();
 			NodeType		GetType(){ return this->m_eType; }
+			std::deque<CNode *> GetChildren(){ return this->m_deqChildren; };
 
 		private:
 			NodeType		m_eType;
 			std::wstring	m_strName;
 
 		private:
-			CNode *			m_pParent;
-
+			CNode *				m_pParent;
+			std::deque<CNode *> m_deqChildren;
+			/*
 			CNode *			m_pLeft;
 			CNode *			m_pRight;
+			*/
 		};
 	}
 
@@ -48,24 +53,16 @@ namespace toy
 		CTree(void);
 		~CTree(void);
 
-		void SetExpNode(tree::CNode * exp);
+		void SetExpNode(std::stack<tree::CNode *> exp);
 
 		std::list<std::wstring> GeneratePostorderInterms();
 		std::wstring			GeneratePostFixString();
-
-		// DEBUG
-		void OutputInorderTraverse();
-		void OutputPostorderTraverse();
 
 	private:
 
 		// rekursiv
 		void PostInterm(tree::CNode *n, std::list<std::wstring>& interms);
 		void PostFix(tree::CNode *n, std::wstring& postFix);
-
-		// DEBUG
-		void Inorder(tree::CNode *n);
-		void Postorder(tree::CNode *n);
 
 	private:
 
