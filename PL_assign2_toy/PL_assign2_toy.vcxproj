@@ -111,6 +111,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Adapter.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="UserFunction.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +126,7 @@
     </ClCompile>
     <ClCompile Include="Adapter.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="UserFunction.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>

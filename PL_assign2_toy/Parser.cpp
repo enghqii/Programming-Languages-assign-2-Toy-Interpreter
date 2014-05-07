@@ -28,9 +28,9 @@ namespace toy
 		m_pExpTree->Clear();
 		m_listIntermCodes.clear();
 
-		// Lexical Analysis
 		for(std::wstring line : code)
 		{
+			// Lexical Analysis
 			m_listLexemes.clear();
 
 			this->LexicalAnalysis(line);
@@ -39,7 +39,6 @@ namespace toy
 			// Syntax Analysis
 			this->SyntaxAnalysis();
 		}
-
 
 		this->GeneratePostFix();
 		this->GenerateIntermediateCode();
@@ -106,6 +105,12 @@ namespace toy
 					(lexeme.name.compare(L"IF") == 0) ) 
 				{
 					lexeme.type = LEX_OPERATOR;
+				}
+				// or a KEYWORD?
+				else if( (lexeme.name.compare(L"DEFUN") == 0) ||
+					(lexeme.name.compare(L"COND") == 0) )
+				{
+					lexeme.type = LEX_KEYWORD;
 				}
 				else
 				{
@@ -174,14 +179,27 @@ namespace toy
 	 -------------------------------------------------------------------- */
 	void CParser::SyntaxAnalysis()
 	{
-		// throw err;
+		
+		// Default state is "EXPRESSION"
+		// if there is 'DEFUN' the state changes into "DECLEAR"
+		m_eState = STATE_EXPRESSION;
+		
+		// tree generating stack
 		std::stack<tree::CNode *> stk;
 
+		// saving last lexical type
 		LEXEME_TYPE lastType = LEX_NULL;
 
-		for( auto it : m_listLexemes ) 
+		// used in DEFUN state
+		std::wstring funcName;
+		std::list<std::wstring> argn;
+
+		for(std::list<CLexeme>::iterator iter = m_listLexemes.begin();
+			iter != m_listLexemes.end();
+			lastType = iter->type, ++iter) 
 		{
-			switch( it.type )
+
+			switch( iter->type )
 			{
 			case LEX_BRACE_OPEN:
 
@@ -197,6 +215,15 @@ namespace toy
 
 			case LEX_IDENTIFIER:
 				{	
+					// find symbol
+					if( m_Defuns.end() != m_Defuns.find(iter->name) ||
+						(m_eState == STATE_DEFUN && funcName.compare(iter->name) == 0 ) )
+					{
+						(*iter).type = LEX_OPERATOR;
+						--iter;
+						continue;
+					}
+
 					if(lastType != LEX_NULL && 
 						lastType != LEX_IDENTIFIER &&
 						lastType != LEX_CONSTANT &&
@@ -207,7 +234,7 @@ namespace toy
 					}
 
 					// just push
-					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, it.name);
+					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, iter->name);
 					stk.push(node);
 				}
 				break;
@@ -225,7 +252,7 @@ namespace toy
 					// TODO : 상수값 유효성 판별 - DONE
 					try
 					{
-						int val = std::stoi(it.name);
+						int val = std::stoi(iter->name);
 						__asm{nop}
 					}
 					catch(std::invalid_argument err)
@@ -233,7 +260,7 @@ namespace toy
 						throw ERR_INVALID_INT;
 					}
 
-					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, it.name);
+					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERAND, iter->name);
 					stk.push(node);
 				}
 				break;
@@ -245,7 +272,7 @@ namespace toy
 						throw ERR_UNEXPECTED_OPERATOR;
 					}
 
-					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERATOR, it.name);
+					tree::CNode * node = new tree::CNode(NULL, tree::NODE_OPERATOR, iter->name);
 					stk.push(node);
 				}
 				break;
@@ -258,36 +285,72 @@ namespace toy
 						throw ERR_UNEXPECTED_BRACE_CLOSE;
 					}
 
-					// merging nodes
-					tree::CNode * op		= NULL;
-					tree::CNode * rValue	= NULL;
-					tree::CNode * lValue	= NULL;
-												
-					if( stk.empty() == false )
+					if(stk.size() > 1)
 					{
-						rValue = stk.top();
-						stk.pop();
+						// merging nodes
+						tree::CNode * op		= NULL;
+						tree::CNode * rValue	= NULL;
+						tree::CNode * lValue	= NULL;
+
+						if( stk.empty() == false )
+						{
+							rValue = stk.top();
+							stk.pop();
+						}
+
+						if( stk.empty() == false )
+						{
+							lValue = stk.top();
+							stk.pop();
+						}
+						if( stk.empty() == false )
+						{
+							op = stk.top();
+							stk.pop();
+						}
+
+						// TODO : rValue , lValue , op의 노드 타입 검사 필요 
+
+						op->AddRight(lValue);
+						op->AddRight(rValue);
+
+						stk.push(op);
+
 					}
-					
-					if( stk.empty() == false )
+				}
+				break;
+
+			case LEX_KEYWORD:
+				{
+					if(lastType != LEX_BRACE_OPEN)
 					{
-						lValue = stk.top();
-						stk.pop();
+						throw ERR_UNEXPECTED_KEYWORD;
 					}
-					if( stk.empty() == false )
+
+					// TODO : ah.... this logic is too strict
+
+					if ( iter->name.compare(L"DEFUN") == 0 )
 					{
-						op = stk.top();
-						stk.pop();
+						m_eState = STATE_DEFUN;
+
+						++iter;
+						funcName = (*(iter)).name;
+						
+						++iter;// '('
+						++iter;
+
+						while((*iter).name.compare(L")") != 0)
+						{
+							CLexeme lex = *iter;
+							argn.push_back(lex.name);
+							++iter;
+						}
+
+						__asm{nop}
 					}
 
-					// TODO : rValue , lValue , op의 노드 타입 검사 필요 
+					// yeah.
 
-					op->AddRight(lValue);
-					op->AddRight(rValue);
-
-					stk.push(op);
-
-					// TODO : 스택 push, pop 할때 익셉션 처리 해야 할껄?
 				}
 				break;
 
@@ -296,17 +359,20 @@ namespace toy
 			default:
 				break;
 			}
-
-			lastType =  it.type;
 		}
 
 		// 수식 트리 저장
-
-		// TODO : merge all nodes in stack?
-		// TODO : 스택에 값이 하나만 있음? 을 확인해야함
 		if(stk.empty() == false)
 		{
-			m_pExpTree->AddExpTree(stk.top());
+			if(m_eState == STATE_EXPRESSION)
+			{
+				m_pExpTree->AddExpTree(stk.top());
+			}
+			else if(m_eState == STATE_DEFUN)
+			{
+				CUserFunction * func = new CUserFunction(funcName, argn, stk.top());
+				m_Defuns[funcName] = func;
+			}
 		}
 		else
 		{

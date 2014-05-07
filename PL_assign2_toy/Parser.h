@@ -2,6 +2,7 @@
 
 #include <string>
 #include <list>
+#include "UserFunction.h"
 
 namespace toy
 {
@@ -19,6 +20,8 @@ namespace toy
 		ERR_UNEXPECTED_BRACE_CLOSE,
 		ERR_UNEXPECTED_OPERATOR,
 		ERR_UNEXPECTED_OPERAND,
+
+		ERR_UNEXPECTED_KEYWORD,
 	};
 
 	enum LEXEME_TYPE
@@ -29,6 +32,7 @@ namespace toy
 		LEX_CONSTANT,
 		LEX_IDENTIFIER,
 		LEX_BRACE_CLOSE,
+		LEX_KEYWORD,
 	};
 
 	struct CLexeme
@@ -39,6 +43,12 @@ namespace toy
 
 		std::wstring name;
 		LEXEME_TYPE type;
+	};
+
+	enum PARSER_STATE
+	{
+		STATE_EXPRESSION = 0,
+		STATE_DEFUN,
 	};
 
 	/***********************************************
@@ -73,11 +83,16 @@ namespace toy
 
 	private:
 
+		PARSER_STATE			m_eState;
+
 		std::wstring			m_strPostFix;
 		
 		std::list<CLexeme>		m_listLexemes;
+
 		CTree *					m_pExpTree;
 		std::list<std::wstring> m_listIntermCodes;
+
+		std::map<std::wstring, CUserFunction * > m_Defuns;
 	};
 
 }

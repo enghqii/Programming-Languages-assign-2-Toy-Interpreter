@@ -19,6 +19,12 @@
     <Filter Include="TOY\Util">
       <UniqueIdentifier>{4c9da823-dc28-4943-bcb5-9d3acc549fe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TOY\Interpreter">
+      <UniqueIdentifier>{f529f6a7-d228-4813-9e47-2ad28beb2936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TOY\Parser">
+      <UniqueIdentifier>{bcaf1540-5d95-4939-a8b8-06eacc54e0c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -42,20 +48,23 @@
     <ClInclude Include="Adapter.h">
       <Filter>TOY</Filter>
     </ClInclude>
-    <ClInclude Include="Tree.h">
-      <Filter>TOY</Filter>
-    </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>TOY\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>TOY</Filter>
-    </ClInclude>
-    <ClInclude Include="Interpreter.h">
-      <Filter>TOY</Filter>
-    </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>TOY\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpreter.h">
+      <Filter>TOY\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="UserFunction.h">
+      <Filter>TOY\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>TOY\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>TOY\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,20 +80,23 @@
     <ClCompile Include="Adapter.cpp">
       <Filter>TOY</Filter>
     </ClCompile>
-    <ClCompile Include="Tree.cpp">
-      <Filter>TOY</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>TOY\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Parser.cpp">
-      <Filter>TOY</Filter>
-    </ClCompile>
-    <ClCompile Include="Interpreter.cpp">
-      <Filter>TOY</Filter>
-    </ClCompile>
     <ClCompile Include="FileIO.cpp">
       <Filter>TOY\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpreter.cpp">
+      <Filter>TOY\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="UserFunction.cpp">
+      <Filter>TOY\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>TOY\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>TOY\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

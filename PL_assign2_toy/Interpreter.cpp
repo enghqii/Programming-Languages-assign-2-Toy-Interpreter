@@ -22,11 +22,6 @@ namespace toy
 		std::list<int> output;
 		output.clear();
 
-		if( m_listInterms.begin()->compare(L"begin") != 0)
-		{
-			throw -1;
-		}
-
 		for( auto iter : m_listInterms )
 		{
 			if( iter.compare(L"begin") == 0 )
@@ -99,6 +94,11 @@ namespace toy
 				{
 					throw -1;
 				}
+			}
+			else if( iter.substr(0,4).compare(L"call") == 0 )
+			{
+				int len = iter.length();
+				std::wstring str = iter.substr(5,len);
 			}
 		}
 

@@ -64,5 +64,6 @@ namespace toy
 	private:
 
 		tree::CNode * root;
+		tree::CNode * symbol;
 	};
 }
