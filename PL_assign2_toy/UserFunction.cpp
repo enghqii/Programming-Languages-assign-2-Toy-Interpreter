@@ -16,7 +16,7 @@ namespace toy
 		expTree = new CTree();
 		expTree->AddExpTree(expNode);
 
-		std::list<std::wstring> interms = expTree->GeneratePostorderInterms();
+		this->objCode = expTree->GeneratePostorderInterms();
 		__asm{nop}
 	}
 

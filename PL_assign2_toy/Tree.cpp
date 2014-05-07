@@ -95,7 +95,20 @@ namespace toy
 		
 		if(n->GetType() == tree::NODE_OPERATOR)
 		{
-			interms.push_back(n->GetName());
+			// if n is not MINUS nor IF then 'call'
+
+			std::wstring name = n->GetName();
+
+			// 2 primitives
+			if(name.compare(L"IF") != 0 && 
+				name.compare(L"MINUS") != 0 )
+			{
+				interms.push_back(L"call " + name);
+			}
+			else
+			{
+				interms.push_back(name);
+			}
 		}
 		else if(n->GetType() == tree::NODE_OPERAND)
 		{

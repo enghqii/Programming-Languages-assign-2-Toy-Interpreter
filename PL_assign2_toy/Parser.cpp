@@ -238,6 +238,7 @@ namespace toy
 					stk.push(node);
 				}
 				break;
+
 			case LEX_CONSTANT:
 				{
 					if(lastType != LEX_NULL && 
@@ -249,7 +250,6 @@ namespace toy
 						throw ERR_UNEXPECTED_OPERAND;
 					}
 
-					// TODO : 상수값 유효성 판별 - DONE
 					try
 					{
 						int val = std::stoi(iter->name);
@@ -264,6 +264,7 @@ namespace toy
 					stk.push(node);
 				}
 				break;
+
 			case LEX_OPERATOR:
 				{
 					if(lastType != LEX_NULL &&
@@ -276,6 +277,7 @@ namespace toy
 					stk.push(node);
 				}
 				break;
+
 			case LEX_BRACE_CLOSE:
 				{
 					if(	lastType != LEX_CONSTANT &&
@@ -293,7 +295,7 @@ namespace toy
 						std::stack<toy::tree::CNode *> tempStk;
 
 						// gathering parameters... into 'tempStk'
-						// An operator node which has no childred is 'op'
+						// An operator node which has no childred is the 'op'
 						while( !( (stk.top()->GetType() == tree::NODE_OPERATOR) && 
 								(stk.top()->GetChildren().size() == 0) ) )
 						{
