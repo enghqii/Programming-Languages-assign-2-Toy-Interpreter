@@ -20,6 +20,7 @@ namespace toy
 		FunctionMap&	GetMap();
 		bool			Find(std::wstring name);
 		void			Add(std::wstring name, CUserFunction * func);
+		CUserFunction*	GetFunction(std::wstring name);
 
 	private:
 		CFunctionTable(void); // ctor

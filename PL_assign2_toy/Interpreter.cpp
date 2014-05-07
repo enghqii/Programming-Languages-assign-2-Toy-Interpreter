@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Interpreter.h"
 
+#include "FunctionTable.h"
+#include "UserFunction.h"
+
 namespace toy
 {
 	CInterpreter::CInterpreter(void)
@@ -22,8 +25,14 @@ namespace toy
 		std::list<int> output;
 		output.clear();
 
-		for( auto iter : m_listInterms )
+		std::stack<CUserFunction *> envStk;
+		std::list<std::wstring> interms = m_listInterms; // no side-effect
+
+		while( interms.empty() == false )
 		{
+			std::wstring iter = interms.front();
+			interms.pop_front();
+
 			if( iter.compare(L"begin") == 0 )
 			{
 				// clear the stack
@@ -46,7 +55,12 @@ namespace toy
 				{
 					throw -1;
 				}
-				
+
+				if(interms.empty())
+				{
+					// exodus
+					break;
+				}
 			}
 			else if( iter.compare(L"MINUS") == 0 )
 			{
@@ -98,7 +112,31 @@ namespace toy
 			else if( iter.substr(0,4).compare(L"call") == 0 )
 			{
 				int len = iter.length();
-				std::wstring str = iter.substr(5,len);
+				std::wstring name = iter.substr(5,len);
+				
+				if( CFunctionTable::shared_table()->Find(name) )
+				{
+					// argn 갯수만큼 스택에서 뽑고 테이블에 저장.
+					CUserFunction* func = CFunctionTable::shared_table()->GetFunction(name);
+					int argc = func->GetArgc();
+
+					std::stack<int> vals;
+
+					for(int i = 0; i < argc; i++)
+					{
+						vals.push(m_stk.top());
+						m_stk.pop();
+					}
+
+					func->SetSymbols(vals);
+
+					envStk.push(func);
+
+				}
+				else
+				{
+					// WTF?
+				}
 			}
 		}
 

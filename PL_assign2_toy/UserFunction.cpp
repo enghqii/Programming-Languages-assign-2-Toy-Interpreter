@@ -11,7 +11,7 @@ namespace toy
 		toy::tree::CNode* expNode)
 		:name(name),
 		argn(argn),
-		args(argn.size())
+		argc(argn.size())
 	{
 		expTree = new CTree();
 		expTree->AddExpTree(expNode);
@@ -26,9 +26,32 @@ namespace toy
 		__asm{nop}
 	}
 
-
 	CUserFunction::~CUserFunction(void)
 	{
 		delete expTree;
+	}
+	
+	int CUserFunction::FindSymbol(std::wstring symbol)
+	{
+		if( argv.find(symbol) != argv.end() )
+		{
+			return argv[symbol];
+		}
+
+		return -1;
+	}
+
+	void CUserFunction::SetSymbols(std::stack<int> vals)
+	{
+		if( vals.size() == argn.size() )
+		{
+			std::wstring symName = argn.front();
+			int val = vals.top();
+
+			argv[symName] = val;
+
+			vals.pop();
+			argn.pop_front();
+		}
 	}
 }

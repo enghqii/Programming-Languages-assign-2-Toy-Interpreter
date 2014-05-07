@@ -49,4 +49,11 @@ namespace toy
 		m_Defuns[name] = func;
 	}
 
+	CUserFunction* CFunctionTable::GetFunction(std::wstring name)
+	{
+		if(Find(name) == true)
+		{
+			return (m_Defuns[name]);
+		}
+	}
 }
