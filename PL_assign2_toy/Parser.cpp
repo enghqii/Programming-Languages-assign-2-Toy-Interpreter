@@ -289,33 +289,29 @@ namespace toy
 					{
 						// merging nodes
 						tree::CNode * op		= NULL;
-						tree::CNode * rValue	= NULL;
-						tree::CNode * lValue	= NULL;
 
-						if( stk.empty() == false )
+						std::stack<toy::tree::CNode *> tempStk;
+
+						// gathering parameters... into 'tempStk'
+						// An operator node which has no childred is 'op'
+						while( !( (stk.top()->GetType() == tree::NODE_OPERATOR) && 
+								(stk.top()->GetChildren().size() == 0) ) )
 						{
-							rValue = stk.top();
+							tempStk.push(stk.top());
 							stk.pop();
 						}
 
-						if( stk.empty() == false )
-						{
-							lValue = stk.top();
-							stk.pop();
-						}
-						if( stk.empty() == false )
-						{
-							op = stk.top();
-							stk.pop();
-						}
+						op = stk.top();
+						stk.pop();
 
-						// TODO : rValue , lValue , op의 노드 타입 검사 필요 
-
-						op->AddRight(lValue);
-						op->AddRight(rValue);
+						// and... merge parameters 
+						while(tempStk.empty() == false)
+						{
+							op->AddRight(tempStk.top());
+							tempStk.pop();
+						}
 
 						stk.push(op);
-
 					}
 				}
 				break;
