@@ -25,6 +25,9 @@
     <Filter Include="TOY\Parser">
       <UniqueIdentifier>{bcaf1540-5d95-4939-a8b8-06eacc54e0c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TOY\FuncTable">
+      <UniqueIdentifier>{65737596-be9e-40e3-a32b-33935ad51a33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -57,14 +60,17 @@
     <ClInclude Include="Interpreter.h">
       <Filter>TOY\Interpreter</Filter>
     </ClInclude>
-    <ClInclude Include="UserFunction.h">
-      <Filter>TOY\Interpreter</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>TOY\Parser</Filter>
     </ClInclude>
     <ClInclude Include="Tree.h">
       <Filter>TOY\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="UserFunction.h">
+      <Filter>TOY\FuncTable</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTable.h">
+      <Filter>TOY\FuncTable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,14 +95,17 @@
     <ClCompile Include="Interpreter.cpp">
       <Filter>TOY\Interpreter</Filter>
     </ClCompile>
-    <ClCompile Include="UserFunction.cpp">
-      <Filter>TOY\Interpreter</Filter>
-    </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>TOY\Parser</Filter>
     </ClCompile>
     <ClCompile Include="Parser.cpp">
       <Filter>TOY\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="UserFunction.cpp">
+      <Filter>TOY\FuncTable</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTable.cpp">
+      <Filter>TOY\FuncTable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

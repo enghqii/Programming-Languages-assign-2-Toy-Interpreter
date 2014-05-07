@@ -16,7 +16,13 @@ namespace toy
 		expTree = new CTree();
 		expTree->AddExpTree(expNode);
 
+		// Generate obj code
 		this->objCode = expTree->GeneratePostorderInterms();
+
+		// we don't need 'begin' and 'end'
+		this->objCode.pop_front();
+		this->objCode.pop_back();
+
 		__asm{nop}
 	}
 

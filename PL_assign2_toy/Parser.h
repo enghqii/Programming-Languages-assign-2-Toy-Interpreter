@@ -92,7 +92,6 @@ namespace toy
 		CTree *					m_pExpTree;
 		std::list<std::wstring> m_listIntermCodes;
 
-		std::map<std::wstring, CUserFunction * > m_Defuns;
 	};
 
 }

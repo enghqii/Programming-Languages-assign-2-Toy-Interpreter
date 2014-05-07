@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="FunctionTable.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PL_assign2_toy.h" />
@@ -116,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="FunctionTable.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PL_assign2_toy.cpp" />

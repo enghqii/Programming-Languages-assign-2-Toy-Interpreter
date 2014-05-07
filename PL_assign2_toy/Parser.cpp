@@ -4,6 +4,8 @@
 
 #include <stack>
 
+#include "FunctionTable.h"
+
 namespace toy
 {
 
@@ -39,6 +41,8 @@ namespace toy
 			// Syntax Analysis
 			this->SyntaxAnalysis();
 		}
+
+		FunctionMap& map = CFunctionTable::shared_table()->GetMap();
 
 		this->GeneratePostFix();
 		this->GenerateIntermediateCode();
@@ -216,7 +220,7 @@ namespace toy
 			case LEX_IDENTIFIER:
 				{	
 					// find symbol
-					if( m_Defuns.end() != m_Defuns.find(iter->name) ||
+					if( CFunctionTable::shared_table()->Find(iter->name) ||
 						(m_eState == STATE_DEFUN && funcName.compare(iter->name) == 0 ) )
 					{
 						(*iter).type = LEX_OPERATOR;
@@ -369,7 +373,8 @@ namespace toy
 			else if(m_eState == STATE_DEFUN)
 			{
 				CUserFunction * func = new CUserFunction(funcName, argn, stk.top());
-				m_Defuns[funcName] = func;
+				CFunctionTable::shared_table()->Add(funcName, func);
+				__asm{nop}
 			}
 		}
 		else
