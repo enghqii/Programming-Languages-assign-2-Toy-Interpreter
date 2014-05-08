@@ -106,7 +106,10 @@ namespace toy
 				}
 				catch(std::invalid_argument err)
 				{
-					throw -1;
+					// throw -1;
+					// find symbol (str);
+					int val = envStk.top()->FindSymbol(str);
+					m_stk.push(val);
 				}
 			}
 			else if( iter.substr(0,4).compare(L"call") == 0 )
@@ -129,14 +132,21 @@ namespace toy
 					}
 
 					func->SetSymbols(vals);
-
 					envStk.push(func);
+
+					std::list<std::wstring> objCode = func->GetObjCode();
+
+					interms.insert(interms.begin(), objCode.begin(), objCode.end());
 
 				}
 				else
 				{
 					// WTF?
 				}
+			}
+			else if( iter.substr(0,4).compare(L"rsub") == 0 )
+			{
+				envStk.pop();
 			}
 		}
 

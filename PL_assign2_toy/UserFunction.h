@@ -37,6 +37,9 @@ namespace toy
 
 		void						SetSymbols(std::stack<int> vals);
 
+		std::list<std::wstring>		GetObjCode();
+
+
 	private:
 
 		std::wstring				name;

@@ -23,6 +23,8 @@ namespace toy
 		this->objCode.pop_front();
 		this->objCode.pop_back();
 
+		this->objCode.push_back(L"rsub");
+
 		__asm{nop}
 	}
 
@@ -45,13 +47,23 @@ namespace toy
 	{
 		if( vals.size() == argn.size() )
 		{
-			std::wstring symName = argn.front();
-			int val = vals.top();
+			int size = vals.size();
 
-			argv[symName] = val;
+			for(int i = 0; i < size; i++)
+			{
+				std::wstring symName = argn.front();
+				int val = vals.top();
 
-			vals.pop();
-			argn.pop_front();
+				argv[symName] = val;
+
+				vals.pop();
+				argn.pop_front();
+			}
 		}
+	}
+
+	std::list<std::wstring> CUserFunction::GetObjCode()
+	{
+		return objCode;
 	}
 }
