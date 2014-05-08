@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <list>
 #include <string>
 
 namespace toy
@@ -21,6 +22,8 @@ namespace toy
 		bool			Find(std::wstring name);
 		void			Add(std::wstring name, CUserFunction * func);
 		CUserFunction*	GetFunction(std::wstring name);
+
+		std::list<std::wstring> GetIntermediates();
 
 	private:
 		CFunctionTable(void); // ctor

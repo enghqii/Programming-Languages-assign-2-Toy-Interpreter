@@ -55,5 +55,25 @@ namespace toy
 		{
 			return (m_Defuns[name]);
 		}
+
+		return 0;
+	}
+
+	std::list<std::wstring> CFunctionTable::GetIntermediates()
+	{
+		std::list<std::wstring> interms;
+
+		FunctionMap::iterator iter = m_Defuns.begin();
+		for(; iter != m_Defuns.end(); ++iter)
+		{
+			std::list<std::wstring> t = iter->second->GetObjCode();
+
+			interms.push_back(iter->first + L" : ");
+			interms.insert(interms.end(), t.begin(), t.end());
+
+			interms.push_back(L"");
+		}
+
+		return interms;
 	}
 }

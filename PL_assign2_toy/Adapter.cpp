@@ -4,6 +4,7 @@
 #include "Parser.h"
 #include "Interpreter.h"
 #include "FileIO.h"
+#include "FunctionTable.h"
 
 #include <fstream>
 
@@ -141,7 +142,12 @@ namespace toy
 	void CAdapter::GenerateIntermediateString()
 	{
 		m_listIntermediate.clear();
-		m_listIntermediate = m_pParser->GetIntermediateList();
+
+		auto interms1 = CFunctionTable::shared_table()->GetIntermediates();
+		m_listIntermediate.insert(m_listIntermediate.end(), interms1.begin(), interms1.end());
+
+		auto interms2 = m_pParser->GetIntermediateList();
+		m_listIntermediate.insert(m_listIntermediate.end(), interms2.begin(), interms2.end());
 	}
 	
 	bool CAdapter::SaveIntermediateCode(CString pathName)
@@ -149,7 +155,7 @@ namespace toy
 		std::wstring str(pathName);
 		try
 		{
-			m_pFileIO->SaveIntermediateCode(str, m_listIntermediate);
+			m_pFileIO->SaveIntermediateCode(str, m_pParser->GetIntermediateList());
 		}
 		catch(int err)
 		{
