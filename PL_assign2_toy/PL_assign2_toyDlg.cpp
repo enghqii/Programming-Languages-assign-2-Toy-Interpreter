@@ -448,7 +448,8 @@ BOOL CPL_assign2_toyDlg::PreTranslateMessage(MSG* pMsg)
 			}
 			
 			// save obj
-			m_pToyAdapter->SaveIntermediateCode(L"prog.o");
+			std::wstring objName = arg.substr(0, arg.length() - 2) + L".o" ;
+			m_pToyAdapter->SaveIntermediateCode(objName.c_str());
 
 		}
 		else if(command.substr(0,3) == L"run")
