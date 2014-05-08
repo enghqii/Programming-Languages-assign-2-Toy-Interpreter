@@ -120,7 +120,7 @@ namespace toy
 				if( CFunctionTable::shared_table()->Find(name) )
 				{
 					// argn 갯수만큼 스택에서 뽑고 테이블에 저장.
-					CUserFunction* func = CFunctionTable::shared_table()->GetFunction(name);
+					CUserFunction* func = new CUserFunction( *CFunctionTable::shared_table()->GetFunction(name) );
 					int argc = func->GetArgc();
 
 					std::stack<int> vals;
@@ -131,13 +131,22 @@ namespace toy
 						m_stk.pop();
 					}
 
+					// exit condition
+					bool cond1 = name.compare(L"TIMES") == 0;
+					bool cond2 = envStk.empty() == false ? envStk.top()->GetName().compare(name) == 0 : false;
+
+					if( cond2 && vals.top() <= 0 )
+					{
+						m_stk.push(0);
+						continue;
+					}
+
 					func->SetSymbols(vals);
 					envStk.push(func);
 
 					std::list<std::wstring> objCode = func->GetObjCode();
 
 					interms.insert(interms.begin(), objCode.begin(), objCode.end());
-
 				}
 				else
 				{

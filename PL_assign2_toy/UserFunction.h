@@ -24,6 +24,7 @@ namespace toy
 		CUserFunction(std::wstring name, 
 			std::list<std::wstring> argn, 
 			toy::tree::CNode* expNode);
+		CUserFunction(CUserFunction& rVal);
 		~CUserFunction(void);
 
 		/* 
@@ -32,6 +33,7 @@ namespace toy
 		*/
 		int							FindSymbol(std::wstring symbol);
 
+		std::wstring				GetName()		{ return name; }
 		int							GetArgc()		{ return argc; }
 		std::map<std::wstring, int> GetSymbolTable(){ return argv; }
 

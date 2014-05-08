@@ -27,6 +27,18 @@ namespace toy
 
 		__asm{nop}
 	}
+	
+	CUserFunction::CUserFunction(CUserFunction& rVal)
+	{
+		this->name = rVal.name;
+
+		this->argn = rVal.argn;
+		this->argc = rVal.argc;
+		this->argv = rVal.argv;
+
+		expTree = rVal.expTree; //
+		objCode = rVal.objCode;
+	}
 
 	CUserFunction::~CUserFunction(void)
 	{
