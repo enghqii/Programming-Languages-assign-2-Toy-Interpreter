@@ -25,6 +25,7 @@ namespace toy
 
 		// Controls
 		bool		LoadSource(CString pathName);
+		bool		SaveSource(CString pathName, CString source);
 		CString		GetSourceString();
 
 		// Parser
@@ -37,6 +38,12 @@ namespace toy
 		bool		SaveIntermediateCode(CString pathName);
 		bool		LoadIntermediateCode(CString pathName);
 		CString		GetIntermediateString();
+
+		void		LoadDefun();
+		void		SaveDefun(CString source);
+
+		void		ClearSource(){ m_listCode.clear(); }
+		std::list<std::wstring>	GetListCode(){return m_listCode;}
 
 		// Executions
 		void		Execute();

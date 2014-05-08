@@ -49,4 +49,9 @@ public:
 	afx_msg void OnBnClickedButton6();
 	afx_msg void OnBnClickedButton7();
 	afx_msg void OnBnClickedButton8();
+	afx_msg void OnEnChangeEdit2();
+	CString m_CommandLine;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedButton9();
+	afx_msg void OnBnClickedButton10();
 };

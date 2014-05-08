@@ -5,6 +5,8 @@
 #include "Interpreter.h"
 #include "FileIO.h"
 
+#include <fstream>
+
 namespace toy
 {
 	CAdapter::CAdapter(void)
@@ -30,13 +32,45 @@ namespace toy
 		std::wstring str(pathName);
 		try
 		{
-			this->m_listCode = m_pFileIO->LoadSource(str);
+			std::list<std::wstring> sour =  m_pFileIO->LoadSource(str);
+			this->m_listCode.insert(m_listCode.end(), sour.begin(), sour.end());
 		}
 		catch(int err)
 		{
 			return false;
 		}
 		return true;
+	}
+
+	bool CAdapter::SaveSource(CString pathName, CString source)
+	{
+		std::wofstream fout;
+		fout.open(pathName,std::ios::trunc);
+		if(!fout){ return false; }
+
+		int		curpos = 0;
+		CString resToken = source.Tokenize(L"\r\n", curpos);
+		std::list<std::wstring> listCode;
+
+		while (resToken != _T(""))
+		{
+			std::wstring wstr = resToken;
+			listCode.push_back(wstr);
+			resToken = source.Tokenize(L"\r\n", curpos);
+		}
+
+		for(std::wstring line : listCode)
+		{
+			if(line.substr(1,5) != L"DEFUN")
+			{
+				fout<<line<<std::endl;
+			}
+		}
+
+		fout.close();
+
+		return true;
+
 	}
 
 	CString CAdapter::GetSourceString()
@@ -179,5 +213,59 @@ namespace toy
 	CString CAdapter::GetResultString()
 	{
 		return CString(m_strResult.c_str());
+	}
+
+	void CAdapter::LoadDefun()
+	{
+		std::wifstream fin;
+		fin.open("defun.txt");
+		if(!fin)
+		{
+			throw -1;
+		}
+
+		std::list<std::wstring> defun;
+
+		// BLAME
+		while(fin.eof() == false)
+		{
+			std::wstring line = L"";
+			std::getline(fin, line);
+
+			defun.push_back(line);
+		}
+
+		m_listCode = defun;
+		//m_listCode.insert(m_listCode.end(), defun.begin(), defun.end());
+
+		__asm{nop}
+		fin.close();
+	}
+
+	void CAdapter::SaveDefun(CString source)
+	{
+		std::wofstream fout;
+		fout.open("defun.txt",std::ios::trunc);
+
+		int		curpos = 0;
+		CString resToken = source.Tokenize(L"\r\n", curpos);
+		std::list<std::wstring> listCode;
+
+		while (resToken != _T(""))
+		{
+			std::wstring wstr = resToken;
+			listCode.push_back(wstr);
+			resToken = source.Tokenize(L"\r\n", curpos);
+		}
+
+		for(std::wstring line : listCode)
+		{
+			if(line.substr(1,5) == L"DEFUN")
+			{
+				fout<<line<<std::endl;
+			}
+		}
+
+		fout.close();
 	}
 }

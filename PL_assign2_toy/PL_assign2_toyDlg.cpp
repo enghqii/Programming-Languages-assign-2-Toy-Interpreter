@@ -55,6 +55,7 @@ CPL_assign2_toyDlg::CPL_assign2_toyDlg(CWnd* pParent /*=NULL*/)
 	, m_strInfix(_T(""))
 	, m_strResult(_T(""))
 	, m_strPost(_T(""))
+	, m_CommandLine(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -65,6 +66,7 @@ void CPL_assign2_toyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_strInfix);
 	DDX_Text(pDX, IDC_EDIT4, m_strResult);
 	DDX_Text(pDX, IDC_EDIT3, m_strPost);
+	DDX_Text(pDX, IDC_EDIT2, m_CommandLine);
 }
 
 BEGIN_MESSAGE_MAP(CPL_assign2_toyDlg, CDialogEx)
@@ -80,6 +82,9 @@ BEGIN_MESSAGE_MAP(CPL_assign2_toyDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON6, &CPL_assign2_toyDlg::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON7, &CPL_assign2_toyDlg::OnBnClickedButton7)
 	ON_BN_CLICKED(IDC_BUTTON8, &CPL_assign2_toyDlg::OnBnClickedButton8)
+	ON_EN_CHANGE(IDC_EDIT2, &CPL_assign2_toyDlg::OnEnChangeEdit2)
+	ON_BN_CLICKED(IDC_BUTTON9, &CPL_assign2_toyDlg::OnBnClickedButton9)
+	ON_BN_CLICKED(IDC_BUTTON10, &CPL_assign2_toyDlg::OnBnClickedButton10)
 END_MESSAGE_MAP()
 
 
@@ -228,6 +233,31 @@ void CPL_assign2_toyDlg::OnBnClickedButton3()
 	}
 }
 
+// Save Source
+void CPL_assign2_toyDlg::OnBnClickedButton10()
+{
+	UpdateData(true);
+	// Obtain current dir path
+	TCHAR szDirectory[512] = L"";
+	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+
+	// File selecting dir
+	CFileDialog dlg(false, NULL, NULL, OFN_OVERWRITEPROMPT, NULL);
+	dlg.m_ofn.lpstrInitialDir = szDirectory;
+
+	if(IDOK == dlg.DoModal()){
+		CString strPathName = dlg.GetPathName();
+		if(m_pToyAdapter->SaveSource(strPathName, m_strInfix))
+		{
+			MessageBox(L"Save done.");
+		}
+		else{
+			MessageBox(L"Save failed.");
+		}
+	}
+	UpdateData(false);
+}
+
 /* on Parse */
 void CPL_assign2_toyDlg::OnBnClickedButton4()
 {
@@ -264,16 +294,12 @@ void CPL_assign2_toyDlg::OnBnClickedButton4()
 	{
 	}
 	
-	m_strResult = m_pToyAdapter->GetResultString();
+	m_strResult += m_pToyAdapter->GetResultString();
+	m_strResult += L"\r\n";
 
 	UpdateData(false);
 }
 
-/* on generate intermediate code */
-void CPL_assign2_toyDlg::OnBnClickedButton5()
-{
-
-}
 
 /* on save intermediate code */
 void CPL_assign2_toyDlg::OnBnClickedButton6()
@@ -333,7 +359,109 @@ void CPL_assign2_toyDlg::OnBnClickedButton8()
 	UpdateData(true);
 
 	m_pToyAdapter->Execute();
-	this->m_strResult = m_pToyAdapter->GetResultString();
+
+	m_strResult += m_pToyAdapter->GetResultString();
+	m_strResult += L"\r\n";
 
 	UpdateData(false);
 }
+
+
+void CPL_assign2_toyDlg::OnEnChangeEdit2()
+{
+
+}
+
+/* Load defun */
+void CPL_assign2_toyDlg::OnBnClickedButton5()
+{
+	m_pToyAdapter->LoadDefun();
+
+	UpdateData(true);
+	m_strInfix = m_pToyAdapter->GetSourceString();
+	UpdateData(false);
+}
+
+void CPL_assign2_toyDlg::OnBnClickedButton9()
+{
+	UpdateData(true);
+	m_pToyAdapter->SaveDefun(m_strInfix);
+	UpdateData(false);
+}
+
+
+
+BOOL CPL_assign2_toyDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN &&
+		pMsg->wParam == VK_RETURN)
+	{
+		UpdateData(true);
+
+		int		curpos = 0;
+		CString resToken = m_CommandLine.Tokenize(L"\r\n", curpos);
+
+		while (true)
+		{
+			CString temp = m_CommandLine.Tokenize(L"\r\n", curpos);
+			if( temp == _T("") )
+				break;
+
+			resToken = temp;
+		}
+
+		OutputDebugString( resToken + L"\n" );
+		UpdateData(false);
+
+		std::wstring command(resToken);
+
+		if(command.substr(0,7) == L"compile")
+		{
+			std::wstring arg = command.substr(8,command.length());
+
+			// clear, defun, prog
+			m_pToyAdapter->ClearSource();
+			m_pToyAdapter->LoadDefun();
+			m_pToyAdapter->LoadSource(CString(arg.c_str()));
+
+			// and parse
+			{
+				UpdateData(true);
+				if( m_pToyAdapter->Parse(m_pToyAdapter->GetListCode()) )
+				{
+					// generate interms
+					m_pToyAdapter->GenerateIntermediateString();
+
+					// get and append strings
+					m_strPost = m_pToyAdapter->GetPostFixString();
+					m_strPost.Append(L"\r\n\r\n");
+					m_strPost.Append(m_pToyAdapter->GetIntermediateString());
+				}
+				else
+				{
+				}
+
+				m_strResult += m_pToyAdapter->GetResultString();
+				m_strResult += L"\r\n";
+
+				UpdateData(false);
+			}
+			
+			// save obj
+			m_pToyAdapter->SaveIntermediateCode(L"prog.o");
+
+		}
+		else if(command.substr(0,3) == L"run")
+		{
+			std::wstring arg = command.substr(4,command.length());
+
+			// load obj
+			m_pToyAdapter->LoadIntermediateCode(CString(arg.c_str()));
+			
+			// and run
+			this->OnBnClickedButton8();
+		}
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+

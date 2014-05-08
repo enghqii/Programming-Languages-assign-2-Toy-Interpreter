@@ -1,0 +1,7 @@
+(DEFUN ADD(x y) (MINUS x (MINUS 0 y)))
+(DEFUN EQUAL(x y) (MINUS (MINUS 1 (IF (MINUS x y) 1)) (IF (MINUS y x) 1)))
+(DEFUN POS(x) (IF x 1))
+(DEFUN ZERO(x) (EQUAL x 0))
+(DEFUN NEG(x) (IF (MINUS 0 x) 1))
+(DEFUN IFTHENELSE(x y z) (ADD (IF x y) (IF (MINUS 1 x) z)))
+(DEFUN TIMES(x y) (IFTHENELSE x (ADD y (TIMES ( MINUS x 1 ) y ) ) 0 ))

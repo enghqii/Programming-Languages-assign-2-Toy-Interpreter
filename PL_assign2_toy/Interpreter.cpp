@@ -132,7 +132,7 @@ namespace toy
 					}
 
 					// exit condition
-					bool cond1 = name.compare(L"TIMES") == 0;
+					//bool cond1 = name.compare(L"TIMES") == 0;
 					bool cond2 = envStk.empty() == false ? envStk.top()->GetName().compare(name) == 0 : false;
 
 					if( cond2 && vals.top() <= 0 )
