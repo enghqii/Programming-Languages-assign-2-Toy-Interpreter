@@ -394,7 +394,8 @@ void CPL_assign2_toyDlg::OnBnClickedButton9()
 BOOL CPL_assign2_toyDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN &&
-		pMsg->wParam == VK_RETURN)
+		pMsg->wParam == VK_RETURN &&
+		GetFocus() == GetDlgItem(IDC_EDIT2))
 	{
 		UpdateData(true);
 
